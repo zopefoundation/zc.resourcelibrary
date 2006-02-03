@@ -1,0 +1,22 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:meta="http://namespaces.zope.org/meta">
+
+  <meta:directives namespace="http://namespaces.zope.org/zope">
+
+    <meta:complexDirective
+        name="resourceLibrary"
+        schema=".zcml.IResourceLibraryDirective"
+        handler=".zcml.ResourceLibrary"
+        >
+
+      <meta:subdirective
+          name="directory"
+          schema=".zcml.IDirectoryDirective"
+          />
+
+    </meta:complexDirective>
+
+  </meta:directives>
+
+</configure>

@@ -1,0 +1,66 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    xmlns:zc="http://namespaces.zope.com/zc"
+    i18n_domain="zope"
+    package="zc.resourcelibrary"
+    >
+
+<!--   This file is the equivalent of site.zcml and it is used for-->
+<!--   functional testing setup -->
+
+  <include package="zope.app" />
+  <include package="zope.app.server" />
+  <include package="zope.app.authentication" />
+
+  <include file="meta.zcml"/>
+  <include file="configure.zcml"/>
+
+  <authenticatedGroup
+    id="zope.Authenticated"
+    title="Everybody"
+    />
+
+  <unauthenticatedPrincipal
+      id="zope.anybody"
+      title="Unauthenticated User" />
+
+  <!-- Principal that tests generally run as -->
+  <principal
+      id="zope.manager"
+      title="Manager"
+      login="mgr"
+      password="mgrpw" />
+
+  <securityPolicy
+      component="zope.security.simplepolicies.PermissiveSecurityPolicy" />
+
+  <browser:page
+      for="zope.app.folder.interfaces.IFolder"
+      name="zc.resourcelibrary.test_template_1"
+      permission="zope.View"
+      template="test_template_1.pt"
+      />
+
+  <browser:page
+      for="zope.app.folder.interfaces.IFolder"
+      name="zc.resourcelibrary.test_template_2"
+      permission="zope.View"
+      template="test_template_2.pt"
+      />
+
+  <browser:page
+      for="zope.app.folder.interfaces.IFolder"
+      name="zc.resourcelibrary.test_template_3"
+      permission="zope.View"
+      template="test_template_3.pt"
+      />
+
+  <browser:page
+      for="zope.app.folder.interfaces.IFolder"
+      name="zc.resourcelibrary.test_template_4"
+      permission="zope.View"
+      template="test_template_4.pt"
+      />
+
+</configure>
