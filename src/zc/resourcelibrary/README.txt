@@ -83,7 +83,7 @@ ignored.)
 
 We'll be using a testbrowser.Browser to simulate a user viewing web pages.
 
-    >>> from zope.testbrowser import Browser
+    >>> from zope.testbrowser.testing import Browser
     >>> browser = Browser()
     >>> browser.addHeader('Authorization', 'Basic mgr:mgrpw')
 
