@@ -17,7 +17,7 @@ configure that library as available use ZCML like this:
     ...     package="zc.resourcelibrary">
     ...
     ...   <resourceLibrary name="some-library">
-    ...     <directory source="example"/>
+    ...     <directory source="ftests/example"/>
     ...   </resourceLibrary>
     ...
     ... </configure>
@@ -40,7 +40,7 @@ This is the current difference between resourceLibrary and resourceDirectory.
     ...
     ...   <resourceLibrary name="my-lib">
     ...     <directory
-    ...         source="example/my-lib"
+    ...         source="ftests/example/my-lib"
     ...         include="included.js included.css"
     ...     />
     ...   </resourceLibrary>
@@ -58,7 +58,7 @@ isn't Javascript or CSS), an exception will occur.
     ...
     ...   <resourceLibrary name="bad-lib">
     ...     <directory
-    ...         source="example/my-lib"
+    ...         source="ftests/example/my-lib"
     ...         include="included.bad"
     ...     />
     ...   </resourceLibrary>
@@ -170,7 +170,7 @@ must be satisfied or an error will be generated.
     ...     package="zc.resourcelibrary">
     ...
     ...   <resourceLibrary name="dependent-but-unsatisfied" require="not-here">
-    ...     <directory source="example"/>
+    ...     <directory source="ftests/example"/>
     ...   </resourceLibrary>
     ...
     ... </configure>
@@ -188,11 +188,11 @@ When the dependencies are satisfied, the registrations will succeed.
     ...     package="zc.resourcelibrary">
     ...
     ...   <resourceLibrary name="dependent" require="dependency">
-    ...     <directory source="example" include="1.js"/>
+    ...     <directory source="ftests/example" include="1.js"/>
     ...   </resourceLibrary>
     ...
     ...   <resourceLibrary name="dependency">
-    ...     <directory source="example" include="2.css"/>
+    ...     <directory source="ftests/example" include="2.css"/>
     ...   </resourceLibrary>
     ...
     ... </configure>
