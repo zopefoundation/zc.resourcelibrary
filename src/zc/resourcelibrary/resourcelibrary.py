@@ -25,7 +25,8 @@ def need(library_name):
     # only take note of needed libraries if there is a request, and it is
     # capable of handling resource librarys
     if request and hasattr(request, 'resource_libraries'):
-        request.resource_libraries.add(library_name)
+        if not library_name in request.resource_libraries:
+            request.resource_libraries.append(library_name)
 
 def getRequired(name):
     return library_info[name].required

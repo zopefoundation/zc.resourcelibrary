@@ -25,7 +25,7 @@ class Request(BrowserRequest):
 
     def _createResponse(self):
         response = Response()
-        self.resource_libraries = response.resource_libraries = set()
+        self.resource_libraries = response.resource_libraries = []
         return response
 
 
@@ -43,9 +43,15 @@ class Response(BrowserResponse):
                 raise RuntimeError('Unknown resource library: "%s"' % lib)
             for lib in required:
                 if lib not in self.resource_libraries:
-                    self.resource_libraries.add(lib)
+                    self.resource_libraries.append(lib)
                     libs.append(lib)
 
+        # reverse the order of the libs in order to have the
+        # dependencies first. TODO: this does not work if the
+        # dependency is needed directly in the page before the
+        # dependent lib is needed.
+        self.resource_libraries.reverse()
+        
         # generate the HTML that will be included in the response
         html = []
         for lib in self.resource_libraries:

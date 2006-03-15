@@ -208,6 +208,12 @@ page, the second library will also be included in the rendered HTML.
     >>> '/@@/dependency/2.css' in browser.contents
     True
 
+Order matters, espacially for js files, so the dependency should
+appear before the dependent library in the page
+
+    >>> print browser.contents.strip()
+    <html>...dependency/2.css...dependent/1.js...</html>
+
 Error Conditions
 ----------------
 
