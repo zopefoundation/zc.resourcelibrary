@@ -25,10 +25,6 @@ import doctest
 import os
 import pytz
 import unittest
-import zc.security.interfaces
-import zc.table.interfaces
-import zc.table.table
-import zc.testlayer.ftesting
 import zope.interface.common.idatetime
 import zope.publisher.interfaces
 import zope.security.interfaces
@@ -78,17 +74,12 @@ def zpt(s, view=None):
 
 #### test setup ####
 
-ResourceLibraryLayer = zc.testlayer.ftesting.FTestingLayer(
-    os.path.join(os.path.split(__file__)[0], 'ftesting.zcml'),
-    __name__, 'ResourceLibraryLayer')
-
 def test_suite():
     suite = functional.FunctionalDocFileSuite(
-        'README.txt',
+        '../README.txt',
         globs={'zcml': zcml, 'zpt': zpt},
         optionflags=doctest.NORMALIZE_WHITESPACE+doctest.ELLIPSIS,
         )
-    suite.layer = ResourceLibraryLayer
     return suite
 
 if __name__ == '__main__':
