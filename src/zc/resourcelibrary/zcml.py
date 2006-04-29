@@ -52,15 +52,15 @@ class IDirectoryDirective(Interface):
         )
 
 
-def handler(name, dependencies, *provideAdapterArgs):
+def handler(name, dependencies, required, provided, adapter_name, factory, info=''):
     if dependencies:
         for dep in dependencies:
             if dep not in library_info:
                 raise ConfigurationError(
                     'Resource library "%s" has unsatisfied dependency on "%s".'
                     % (name, dep))
-
-    zapi.getGlobalSiteManager().provideAdapter(*provideAdapterArgs)
+    zapi.getGlobalSiteManager().registerAdapter(
+        factory, required, provided, adapter_name, info)
 
 
 INCLUDABLE_EXTENTIONS = ('.js', '.css')
