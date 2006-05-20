@@ -19,4 +19,6 @@
 
   </meta:directives>
 
+  <meta:provides feature="zc.resourcelibrary" />
+
 </configure>
