@@ -19,6 +19,9 @@ from zope.app.publication.interfaces import IBrowserRequestFactory
 from zope.publisher.browser import BrowserRequest, BrowserResponse
 from zope.publisher.browser import isHTML
 import zc.resourcelibrary.zcml
+from zope.app.component.hooks import getSite
+from zope.component import getMultiAdapter
+from zope.traversing.browser.interfaces import IAbsoluteURL
 
 class Request(BrowserRequest):
     interface.classProvides(IBrowserRequestFactory)
@@ -33,7 +36,6 @@ class Request(BrowserRequest):
 class Response(BrowserResponse):
 
     def _implicitResult(self, body):
-        
         #figure out the content type
         content_type = self.getHeader('content-type')
         if content_type is None:
@@ -64,19 +66,23 @@ class Response(BrowserResponse):
             
             # generate the HTML that will be included in the response
             html = []
+            site = getSite()
+            baseURL = str(getMultiAdapter((site, self._request),
+                                          IAbsoluteURL))
             for lib in self.resource_libraries:
                 included = zc.resourcelibrary.getIncluded(lib)
                 for file_name in included:
                     if file_name.endswith('.js'):
-                        html.append('<script src="/@@/%s/%s" '
-                                    'language="Javascript1.1"' % (lib, file_name))
+                        html.append('<script src="%s/@@/%s/%s" '
+                                    'language="Javascript1.1"'
+                                    % (baseURL, lib, file_name))
                         html.append('    type="text/javascript">')
                         html.append('</script>')
                     elif file_name.endswith('.css'):
                         html.append('<style type="text/css" media="all">')
                         html.append('  <!--')
-                        html.append('    @import url("/@@/%s/%s");'
-                                    % (lib, file_name))
+                        html.append('    @import url("%s/@@/%s/%s");'
+                                    % (baseURL, lib, file_name))
                         html.append('  -->')
                         html.append('</style>')
                     else:

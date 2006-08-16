@@ -112,6 +112,14 @@ And the JavaScript is available from the URL referenced.
         alert('Hi there!');
     }
 
+For inclusion of resources the full base url with namespaces is used.
+
+    >>> browser.open('http://localhost/++skin++Basic/zc.resourcelibrary.test_template_2')
+    >>> print browser.contents
+    <html...
+    src="http://localhost/++skin++Basic/@@/my-lib/included.js"...
+    </html>
+
 A reference to the CSS is also inserted into the HTML.
 
     >>> browser.open('http://localhost/zc.resourcelibrary.test_template_2')
