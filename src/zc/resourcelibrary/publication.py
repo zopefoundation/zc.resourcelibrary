@@ -74,7 +74,6 @@ class Response(BrowserResponse):
                 for file_name in included:
                     if file_name.endswith('.js'):
                         html.append('<script src="%s/@@/%s/%s" '
-                                    'language="Javascript1.1"'
                                     % (baseURL, lib, file_name))
                         html.append('    type="text/javascript">')
                         html.append('</script>')
