@@ -35,6 +35,14 @@ class Request(BrowserRequest):
 
 class Response(BrowserResponse):
 
+    def retry(self):
+        """
+        Returns a response object to be used in a retry attempt
+        """
+        response = super(Response, self).retry()
+        response.resource_libraries = self.resource_libraries
+        return 
+
     def _implicitResult(self, body):
         #figure out the content type
         content_type = self.getHeader('content-type')
@@ -45,7 +53,8 @@ class Response(BrowserResponse):
         if content_type == 'text/html' or content_type == 'text/xml':
             #act on HTML and XML content only!
             
-            # add any libraries that the explicitly referenced libraries require
+            # add any libraries that the explicitly referenced
+            # libraries require
             libs = list(self.resource_libraries)
             while libs:
                 lib = libs.pop()
