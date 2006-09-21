@@ -37,10 +37,29 @@ class Response(BrowserResponse):
 
     def retry(self):
         """
-        Returns a response object to be used in a retry attempt
+        Returns a response object to be used in a retry attempt.
+
+        >>> response = Response()
+        >>> response
+        <zc.resourcelibrary.publication.Response object at ...>
+        >>> response1 = response.retry()
+        
+        The returned object is not the same.
+        >>> response1 is response
+        False
+
+        If resource_libraries are defined they are assigned to the new
+        response.
+        >>> rl = ['a','b','c']
+        >>> response.resource_libraries = rl
+        >>> response.retry().resource_libraries is rl
+        True
+        >>> response.retry().retry().resource_libraries is rl
+        True
         """
         response = super(Response, self).retry()
-        response.resource_libraries = self.resource_libraries
+        if hasattr(self, 'resource_libraries'):
+            response.resource_libraries = self.resource_libraries
         return response
 
     def _implicitResult(self, body):
