@@ -41,7 +41,7 @@ class Response(BrowserResponse):
         """
         response = super(Response, self).retry()
         response.resource_libraries = self.resource_libraries
-        return 
+        return response
 
     def _implicitResult(self, body):
         #figure out the content type
