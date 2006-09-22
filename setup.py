@@ -2,8 +2,8 @@ from setuptools import setup, find_packages
 
 setup(
     name="zc.resourcelibrary",
-    version="0.5.2",
-    packages=find_packages('src', exclude=["*.tests", "*.ftests"]),
+    version="0.6",
+    packages=find_packages('src'),
     
     package_dir= {'':'src'},
     
@@ -22,4 +22,6 @@ and component-friendly.
 """,
     license='ZPL',
     keywords="zope zope3",
+    classifiers = ['Framework :: Zope3'],
+    install_requires=['setuptools'],    
     )
