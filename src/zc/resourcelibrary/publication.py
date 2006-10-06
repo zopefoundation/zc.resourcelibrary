@@ -18,10 +18,12 @@ from zope import interface
 from zope.app.publication.interfaces import IBrowserRequestFactory
 from zope.publisher.browser import BrowserRequest, BrowserResponse
 from zope.publisher.browser import isHTML
-import zc.resourcelibrary.zcml
 from zope.app.component.hooks import getSite
 from zope.component import getMultiAdapter
 from zope.traversing.browser.interfaces import IAbsoluteURL
+
+import zc.resourcelibrary
+
 
 class Request(BrowserRequest):
     interface.classProvides(IBrowserRequestFactory)

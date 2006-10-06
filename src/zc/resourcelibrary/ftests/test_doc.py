@@ -19,17 +19,10 @@ from zc.resourcelibrary import publication
 from zc.resourcelibrary import tal
 from zope.app.testing import functional
 from zope.configuration import xmlconfig
-from zope import component, interface
 from zope.pagetemplate import pagetemplate
 import doctest
-import os
-import pytz
 import unittest
-import zope.interface.common.idatetime
-import zope.publisher.interfaces
-import zope.security.interfaces
 import zope.security.management
-import zope.testing.module
 
 #### testing framework ####
 
