@@ -109,26 +109,17 @@ class Response(BrowserResponse):
         return super(Response, self)._implicitResult(body)
 
     def _addDependencies(self, resource_libraries):
-        # avoid side effects by copying the list before modifying it
-        resource_libraries = list(resource_libraries)
-        # add any libraries that the explicitly referenced
-        # libraries require
-        libs = list(resource_libraries)
-        while libs:
-            lib = libs.pop()
+        result = []
+        def add_lib(lib):
+            if lib in result:
+                return # Nothing to do
             try:
                 required = zc.resourcelibrary.getRequired(lib)
             except KeyError:
                 raise RuntimeError('Unknown resource library: "%s"' % lib)
-            for lib in required:
-                if lib not in resource_libraries:
-                    resource_libraries.append(lib)
-                    libs.append(lib)
-
-        # reverse the order of the libs in order to have the
-        # dependencies first. TODO: this does not work if the
-        # dependency is needed directly in the page before the
-        # dependent lib is needed.
-        resource_libraries.reverse()
-        return resource_libraries
-
+            for other in required:
+                add_lib(other)
+            result.append(lib)
+        for lib in resource_libraries:
+            add_lib(lib)
+        return result
