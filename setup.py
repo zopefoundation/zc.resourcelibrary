@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
     name="zc.resourcelibrary",
-    version="0.6",
+    version="0.7dev",
     packages=find_packages('src'),
     
     package_dir= {'':'src'},
