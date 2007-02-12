@@ -8,10 +8,7 @@ setup(
     package_dir= {'':'src'},
     
     namespace_packages=['zc'],
-    package_data = {
-    '': ['*.txt', '*.zcml'],
-    },
-
+    include_package_data=True,
     zip_safe=False,
     author='Zope Project',
     author_email='zope3-dev@zope.org',
