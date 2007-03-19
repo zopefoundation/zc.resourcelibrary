@@ -21,6 +21,7 @@ from zope.app.testing import functional
 from zope.configuration import xmlconfig
 from zope.pagetemplate import pagetemplate
 import doctest
+import os
 import unittest
 import zope.security.management
 
@@ -67,12 +68,17 @@ def zpt(s, view=None):
 
 #### test setup ####
 
+ResourceLibraryFunctionalLayer = functional.ZCMLLayer(
+    os.path.join(os.path.split(__file__)[0], 'ftesting.zcml'),
+    __name__, 'ResourceLibraryFunctionalLayer')
+
 def test_suite():
     suite = functional.FunctionalDocFileSuite(
         '../README.txt',
         globs={'zcml': zcml, 'zpt': zpt},
         optionflags=doctest.NORMALIZE_WHITESPACE+doctest.ELLIPSIS,
         )
+    suite.layer = ResourceLibraryFunctionalLayer
     return suite
 
 if __name__ == '__main__':

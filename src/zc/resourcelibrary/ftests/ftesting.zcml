@@ -1,0 +1,73 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    xmlns:zc="http://namespaces.zope.com/zc"
+    i18n_domain="zope"
+    package="zc.resourcelibrary.ftests"
+    >
+  <!-- set up enough of Zope to run the tests -->
+
+  <include package="zope.app.zcmlfiles" />
+  <include package="zope.app.authentication" />
+
+  <!-- principals -->
+
+  <unauthenticatedPrincipal
+      id="zope.anybody"
+      title="Unauthenticated User" />
+
+
+  <include package="zope.app.securitypolicy" file="meta.zcml"/>
+
+  <securityPolicy
+    component="zope.app.securitypolicy.zopepolicy.ZopeSecurityPolicy" />
+
+  <role id="zope.Anonymous" title="Everybody"
+                 description="All users have this role implicitly" />
+
+  <grant permission="zope.View"
+                  role="zope.Anonymous" />
+
+  <!-- also need the resource library config -->
+
+  <include package="zc.resourcelibrary" file="meta.zcml"/>
+  <include package="zc.resourcelibrary"/>
+
+  <!-- make some pages to use in the tests -->
+
+  <browser:page
+      for="zope.app.folder.interfaces.IFolder"
+      name="zc.resourcelibrary.test_template_1"
+      permission="zope.View"
+      template="test_template_1.pt"
+      />
+
+  <browser:page
+      for="zope.app.folder.interfaces.IFolder"
+      name="zc.resourcelibrary.test_template_2"
+      permission="zope.View"
+      template="test_template_2.pt"
+      />
+
+  <browser:page
+      for="zope.app.folder.interfaces.IFolder"
+      name="zc.resourcelibrary.test_template_3"
+      permission="zope.View"
+      template="test_template_3.pt"
+      />
+
+  <browser:page
+      for="zope.app.folder.interfaces.IFolder"
+      name="zc.resourcelibrary.test_template_4"
+      permission="zope.View"
+      template="test_template_4.pt"
+      />
+
+  <browser:page
+      for="zope.app.folder.interfaces.IFolder"
+      name="zc.resourcelibrary.test_template_5"
+      permission="zope.View"
+      template="test_template_5.pt"
+      />
+
+</configure>

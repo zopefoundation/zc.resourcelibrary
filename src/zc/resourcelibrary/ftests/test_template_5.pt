@@ -1,0 +1,7 @@
+<html>
+  <head></head>
+  <body>
+    <tal:block replace="structure resource_library:my-lib"/>
+    <textarea><head>Not the real head.</head></textarea>
+  </body>
+</html>

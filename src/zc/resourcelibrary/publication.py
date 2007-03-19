@@ -45,7 +45,7 @@ class Response(BrowserResponse):
         >>> response
         <zc.resourcelibrary.publication.Response object at ...>
         >>> response1 = response.retry()
-        
+
         The returned object is not the same.
         >>> response1 is response
         False
@@ -100,10 +100,12 @@ class Response(BrowserResponse):
                         # shouldn't get here; zcml.py is supposed to check includes
                         raise RuntimeError('Resource library doesn\'t know how to '
                                            'include this file: "%s"' % file_name)
-    
+
             if html:
+                # This is a pretty low-rent way of adding things to the head.
+                # We should probably use a real HTML parser instead.
                 body = body.replace('<head>', '<head>\n    %s\n' %
-                                    '\n    '.join(html))
+                                    '\n    '.join(html), 1)
 
 
         return super(Response, self)._implicitResult(body)

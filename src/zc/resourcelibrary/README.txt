@@ -243,6 +243,22 @@ Errors are reported if you do something wrong.
     ZopeXMLConfigurationError: ...
         ConfigurationError: Directory u'...does-not-exist' does not exist
 
+Multiple Heads
+--------------
+
+On occasion the body of an HTML document may contain the text "<head>".  In
+those cases, only the actual head tag should be manipulated.  The first
+occurrence of "<head>" has the script tag inserted...
+
+    >>> browser.open('http://localhost/zc.resourcelibrary.test_template_5')
+    >>> print browser.contents
+    <html>...<head> <script src="http://localhost/@@/my-lib/included.js"...
+
+...but that is the only time it is inserted.
+
+    >>> browser.contents.count('src="http://localhost/@@/my-lib/included.js"')
+    1
+
 Future Work
 -----------
 
