@@ -1,0 +1,44 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    xmlns:browser="http://namespaces.zope.org/browser"
+    xmlns:zc="http://namespaces.zope.com/zc"
+    i18n_domain="zope">
+
+  <!-- make some pages to use in the tests -->
+
+  <browser:page
+      for="zope.app.folder.interfaces.IFolder"
+      name="zc.resourcelibrary.test_template_1"
+      permission="zope.View"
+      template="ftests/test_template_1.pt"
+      />
+
+  <browser:page
+      for="zope.app.folder.interfaces.IFolder"
+      name="zc.resourcelibrary.test_template_2"
+      permission="zope.View"
+      template="ftests/test_template_2.pt"
+      />
+
+  <browser:page
+      for="zope.app.folder.interfaces.IFolder"
+      name="zc.resourcelibrary.test_template_3"
+      permission="zope.View"
+      template="ftests/test_template_3.pt"
+      />
+
+  <browser:page
+      for="zope.app.folder.interfaces.IFolder"
+      name="zc.resourcelibrary.test_template_4"
+      permission="zope.View"
+      template="ftests/test_template_4.pt"
+      />
+
+  <browser:page
+      for="zope.app.folder.interfaces.IFolder"
+      name="zc.resourcelibrary.test_template_5"
+      permission="zope.View"
+      template="ftests/test_template_5.pt"
+      />
+
+</configure>
