@@ -3,7 +3,7 @@
     xmlns:browser="http://namespaces.zope.org/browser"
     xmlns:zc="http://namespaces.zope.com/zc"
     i18n_domain="zope"
-    package="zc.resourcelibrary.ftests"
+    package="zc.resourcelibrary.tests"
     >
   <!-- set up enough of Zope to run the tests -->
 
@@ -20,13 +20,13 @@
   <include package="zope.app.securitypolicy" file="meta.zcml"/>
 
   <securityPolicy
-    component="zope.app.securitypolicy.zopepolicy.ZopeSecurityPolicy" />
+      component="zope.securitypolicy.zopepolicy.ZopeSecurityPolicy" />
 
   <role id="zope.Anonymous" title="Everybody"
-                 description="All users have this role implicitly" />
+        description="All users have this role implicitly" />
 
   <grant permission="zope.View"
-                  role="zope.Anonymous" />
+         role="zope.Anonymous" />
 
   <!-- also need the resource library config -->
 
