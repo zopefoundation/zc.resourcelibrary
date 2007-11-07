@@ -10,35 +10,35 @@
       for="zope.app.folder.interfaces.IFolder"
       name="zc.resourcelibrary.test_template_1"
       permission="zope.View"
-      template="ftests/test_template_1.pt"
+      template="tests/test_template_1.pt"
       />
 
   <browser:page
       for="zope.app.folder.interfaces.IFolder"
       name="zc.resourcelibrary.test_template_2"
       permission="zope.View"
-      template="ftests/test_template_2.pt"
+      template="tests/test_template_2.pt"
       />
 
   <browser:page
       for="zope.app.folder.interfaces.IFolder"
       name="zc.resourcelibrary.test_template_3"
       permission="zope.View"
-      template="ftests/test_template_3.pt"
+      template="tests/test_template_3.pt"
       />
 
   <browser:page
       for="zope.app.folder.interfaces.IFolder"
       name="zc.resourcelibrary.test_template_4"
       permission="zope.View"
-      template="ftests/test_template_4.pt"
+      template="tests/test_template_4.pt"
       />
 
   <browser:page
       for="zope.app.folder.interfaces.IFolder"
       name="zc.resourcelibrary.test_template_5"
       permission="zope.View"
-      template="ftests/test_template_5.pt"
+      template="tests/test_template_5.pt"
       />
 
 </configure>
