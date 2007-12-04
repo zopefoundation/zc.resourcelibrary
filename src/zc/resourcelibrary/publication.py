@@ -71,7 +71,9 @@ class Response(BrowserResponse):
             if isHTML(body):
                 content_type = 'text/html'
 
-        if content_type == 'text/html' or content_type == 'text/xml':
+        # check the content type disregarding parameters, whitespace and case
+        if content_type.split(';', 1)[0].strip().lower() in (
+            'text/html', 'text/xml'):
             #act on HTML and XML content only!
 
             self.resource_libraries = self._addDependencies(self.resource_libraries)

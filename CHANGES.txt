@@ -2,6 +2,11 @@
 CHANGES
 =======
 
+0.6.2 (2007-12-04)
+------------------
+
+- fixed the check for HTML and XML content to allow content type parameters
+
 0.6.1 (2007-11-03)
 ------------------
 
