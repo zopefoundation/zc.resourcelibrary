@@ -166,6 +166,47 @@ be included.
     >>> '/@@/my-lib/included.js' in zpt(page, view=View())
     True
 
+
+Content-type checking
+---------------------
+
+Resources should be referenced only from HTML and XML content, other content
+types should not be touched by the resource library:
+
+    >>> page = ('<html><head>'
+    ...         '<tal:block replace="resource_library:my-lib"/>'
+    ...         '</head><body></body></html>')
+
+    >>> '/@@/my-lib/included.js' in zpt(page, content_type='text/html')
+    True
+
+    >>> '/@@/my-lib/included.js' in zpt(page, content_type='text/xml')
+    True
+
+    >>> '/@@/my-lib/included.js' in zpt(page, content_type='text/none')
+    False
+
+This works also if the content type is spelled in a funny way and contains
+whitespace (leading whitespace and funny spelling of the major type will cause
+the publisher to complain so we don't try that here):
+
+    >>> '/@@/my-lib/included.js' in zpt(page, content_type='text/hTMl  ')
+    True
+
+    >>> '/@@/my-lib/included.js' in zpt(page, content_type='text/nOne ')
+    False
+
+Parameters to the content type can't fool the check either:
+
+    >>> '/@@/my-lib/included.js' in zpt(
+    ...     page, content_type='text/xml; charset=utf-8')
+    True
+
+    >>> '/@@/my-lib/included.js' in zpt(
+    ...     page, content_type='text/none; charset=utf-8')
+    False
+
+
 Dependencies
 ------------
 

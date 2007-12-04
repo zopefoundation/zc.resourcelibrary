@@ -47,7 +47,7 @@ class TestPageTemplate(pagetemplate.PageTemplate):
         return context
 
 
-def zpt(s, view=None):
+def zpt(s, view=None, content_type=None):
     request = publication.Request(body_instream=StringIO(''), environ={})
     zope.security.management.newInteraction(request)
     pt = TestPageTemplate(view)
@@ -61,6 +61,9 @@ def zpt(s, view=None):
     pt.write(s)
     html = pt()
     zope.security.management.endInteraction()
+
+    if content_type:
+        request.response.setHeader("Content-Type", content_type)
 
     if html:
         request.response.setResult(html)
