@@ -22,7 +22,7 @@ def read(*rnames):
     return open(os.path.join(os.path.dirname(__file__), *rnames)).read()
 
 setup(name='zc.resourcelibrary',
-      version = '0.7.0dev',
+      version = '0.6.2',
       author='Zope Corporation and Contributors',
       author_email='zope3-dev@zope.org',
       description='Post-rendering Resource Inclusion',
