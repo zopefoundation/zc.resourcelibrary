@@ -186,14 +186,15 @@ types should not be touched by the resource library:
     >>> '/@@/my-lib/included.js' in zpt(page, content_type='text/none')
     False
 
-This works also if the content type is spelled in a funny way and contains
-whitespace (leading whitespace and funny spelling of the major type will cause
-the publisher to complain so we don't try that here):
+This also works if the content type contains uppercase characters, as per RfC
+2045 on the syntax of MIME type specifications (we can't test uppercase
+characters in the major type yet since the publisher is not completely up to
+the RfC on that detail yet):
 
-    >>> '/@@/my-lib/included.js' in zpt(page, content_type='text/hTMl  ')
+    >>> '/@@/my-lib/included.js' in zpt(page, content_type='text/hTMl')
     True
 
-    >>> '/@@/my-lib/included.js' in zpt(page, content_type='text/nOne ')
+    >>> '/@@/my-lib/included.js' in zpt(page, content_type='text/nOne')
     False
 
 Parameters to the content type can't fool the check either:
@@ -204,6 +205,19 @@ Parameters to the content type can't fool the check either:
 
     >>> '/@@/my-lib/included.js' in zpt(
     ...     page, content_type='text/none; charset=utf-8')
+    False
+
+The content type is, however, assumed to be a strictly valid MIME type
+specification, implying that it can't contain any whitespace up to the
+semicolon signalling the start of parameters, if any (again, we can't yet test
+whitespace around the major type as that would upset the publisher):
+
+    >>> '/@@/my-lib/included.js' in zpt(
+    ...     page, content_type='text/ xml')
+    False
+
+    >>> '/@@/my-lib/included.js' in zpt(
+    ...     page, content_type='text/xml ; charset=utf-8')
     False
 
 

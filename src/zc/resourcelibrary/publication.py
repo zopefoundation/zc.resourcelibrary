@@ -71,8 +71,8 @@ class Response(BrowserResponse):
             if isHTML(body):
                 content_type = 'text/html'
 
-        # check the content type disregarding parameters, whitespace and case
-        if content_type.split(';', 1)[0].strip().lower() in (
+        # check the content type disregarding parameters and case
+        if content_type.split(';', 1)[0].lower() in (
             'text/html', 'text/xml'):
             #act on HTML and XML content only!
 
