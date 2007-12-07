@@ -2,6 +2,11 @@
 CHANGES
 =======
 
+0.8.2 (2007-12-07)
+------------------
+
+- bug fix: when checking content type, take into account that it may be None
+
 0.8.1 (2007-12-05)
 ------------------
 

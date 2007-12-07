@@ -220,6 +220,16 @@ whitespace around the major type as that would upset the publisher):
     ...     page, content_type='text/xml ; charset=utf-8')
     False
 
+The content type may also be None if it was never set, which of course doesn't
+count as HTML or XML either:
+
+    >>> from zc.resourcelibrary import publication
+    >>> from StringIO import StringIO
+    >>> request = publication.Request(body_instream=StringIO(''), environ={})
+    >>> request.response.setResult("This is not HTML text.")
+    >>> '/@@/my-lib/included.js' in request.response.consumeBody()
+    False
+
 
 Dependencies
 ------------
