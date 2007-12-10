@@ -209,8 +209,8 @@ Parameters to the content type can't fool the check either:
 
 The content type is, however, assumed to be a strictly valid MIME type
 specification, implying that it can't contain any whitespace up to the
-semicolon signalling the start of parameters, if any (again, we can't yet test
-whitespace around the major type as that would upset the publisher):
+semicolon signalling the start of parameters, if any (we can't test whitespace
+around the major type as that would already upset the publisher):
 
     >>> '/@@/my-lib/included.js' in zpt(
     ...     page, content_type='text/ xml')
