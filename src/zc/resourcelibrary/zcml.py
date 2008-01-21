@@ -76,7 +76,7 @@ def handler(name, dependencies, required, provided, adapter_name, factory, info=
         factory, required, provided, adapter_name, info)
 
 
-INCLUDABLE_EXTENTIONS = ('.js', '.css')
+INCLUDABLE_EXTENTIONS = ('.js', '.css', '.kss')
 
 class ResourceLibrary(object):
 

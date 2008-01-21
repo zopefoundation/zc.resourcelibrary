@@ -98,6 +98,8 @@ class Response(BrowserResponse):
                                     % (baseURL, lib, file_name))
                         html.append('  -->')
                         html.append('</style>')
+                    elif file_name.endswith('.kss'):
+                        html.append('<link type="text/kss" href="%s/@@/%s/%s" rel="kinetic-stylesheet" />' % (baseURL, lib, file_name))
                     else:
                         # shouldn't get here; zcml.py is supposed to check includes
                         raise RuntimeError('Resource library doesn\'t know how to '
