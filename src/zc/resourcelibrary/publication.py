@@ -74,46 +74,50 @@ class Response(BrowserResponse):
         # check the content type disregarding parameters and case
         if content_type and content_type.split(';', 1)[0].lower() in (
             'text/html', 'text/xml'):
-            #act on HTML and XML content only!
+            # act on HTML and XML content only!
 
-            self.resource_libraries = self._addDependencies(self.resource_libraries)
-
-            # generate the HTML that will be included in the response
-            html = []
-            site = getSite()
-            baseURL = str(getMultiAdapter((site, self._request),
-                                          IAbsoluteURL))
-            for lib in self.resource_libraries:
-                included = zc.resourcelibrary.getIncluded(lib)
-                for file_name in included:
-                    if file_name.endswith('.js'):
-                        html.append('<script src="%s/@@/%s/%s" '
-                                    % (baseURL, lib, file_name))
-                        html.append('    type="text/javascript">')
-                        html.append('</script>')
-                    elif file_name.endswith('.css'):
-                        html.append('<style type="text/css" media="all">')
-                        html.append('  <!--')
-                        html.append('    @import url("%s/@@/%s/%s");'
-                                    % (baseURL, lib, file_name))
-                        html.append('  -->')
-                        html.append('</style>')
-                    elif file_name.endswith('.kss'):
-                        html.append('<link type="text/kss" href="%s/@@/%s/%s" rel="kinetic-stylesheet" />' % (baseURL, lib, file_name))
-                    else:
-                        # shouldn't get here; zcml.py is supposed to check includes
-                        raise RuntimeError('Resource library doesn\'t know how to '
-                                           'include this file: "%s"' % file_name)
+            resource_libraries = self._addDependencies(self.resource_libraries)
+            html = self._generateIncludes(resource_libraries)
 
             if html:
                 # This is a pretty low-rent way of adding things to the head.
                 # We should probably use a real HTML parser instead.
                 body = body.replace('<head>', '<head>\n    %s\n' %
-                                    '\n    '.join(html), 1)
-
+                                    html, 1)
 
         return super(Response, self)._implicitResult(body)
 
+    def _generateIncludes(self, libraries):
+        # generate the HTML that will be included in the response
+        html = []
+        site = getSite()
+        baseURL = str(getMultiAdapter((site, self._request),
+                                      IAbsoluteURL))
+
+        for lib in libraries:
+            included = zc.resourcelibrary.getIncluded(lib)
+            for file_name in included:
+                if file_name.endswith('.js'):
+                    html.append('<script src="%s/@@/%s/%s" '
+                                % (baseURL, lib, file_name))
+                    html.append('    type="text/javascript">')
+                    html.append('</script>')
+                elif file_name.endswith('.css'):
+                    html.append('<style type="text/css" media="all">')
+                    html.append('  <!--')
+                    html.append('    @import url("%s/@@/%s/%s");'
+                                % (baseURL, lib, file_name))
+                    html.append('  -->')
+                    html.append('</style>')
+                elif file_name.endswith('.kss'):
+                    html.append('<link type="text/kss" href="%s/@@/%s/%s" rel="kinetic-stylesheet" />' % (baseURL, lib, file_name))
+                else:
+                    # shouldn't get here; zcml.py is supposed to check includes
+                    raise RuntimeError('Resource library doesn\'t know how to '
+                                       'include this file: "%s"' % file_name)
+
+        return '\n    '.join(html)
+    
     def _addDependencies(self, resource_libraries):
         result = []
         def add_lib(lib):
