@@ -324,6 +324,52 @@ occurrence of "<head>" has the script tag inserted...
     >>> browser.contents.count('src="http://localhost/@@/my-lib/included.js"')
     1
 
+Resource bundles
+----------------
+
+The library is capable of bundling similar resources into
+bundles. They're made cache-friendly by giving them a filename that is
+a digest of the contents.
+
+Resources are concatenated only if they're of the same type and such
+that the intersection of any two bundles is empty. This is taken care
+of automatically by the library in the following way:
+
+  * If some resource 'x' is in both resource library 'A' and 'B', then
+    'x' is split out as its own bundle, while the remaining resources
+    in each library are bundled together.
+
+  * If there are several shared resources, say, 'x' and 'y', they will
+    be bundled together if and only if any resources that requires
+    either, requires both.
+
+First we need to initialize the resource manager. In an application setup
+this happens automatically right after the application process is started.
+     
+    >>> from zc.resourcelibrary import resources, interfaces
+    >>> resources.initializeResourceManager()    
+
+It is then installed as a utility:
+
+    >>> from zope.component import getUtility
+    >>> manager = getUtility(interfaces.IResourceManager)
+
+We can list resource bundles by library (dependant):
+    
+    >>> manager.by_dependant # doctest: +ELLIPSIS +NORMALIZE_WHITESPACE
+    {u'dependent':
+     [<zc.resourcelibrary.resources.ResourceBundle object at ...>],
+     u'dependency': [<zc.resourcelibrary.resources.ResourceBundle object at ...>],
+     u'my-lib': [<zc.resourcelibrary.resources.ResourceBundle object at ...>]}
+
+Or get the bundles themselves by bundle digest:
+    
+    >>> manager.by_digest # doctest: +ELLIPSIS +NORMALIZE_WHITESPACE
+    {'9ea06e8b82c7c4f5cf1f3d367562eb19ec3cb403':
+     <zc.resourcelibrary.resources.ResourceBundle object at ...>,
+     'be1bdec0aa74b4dcb079943e70528096cca985f8':
+     <zc.resourcelibrary.resources.ResourceBundle object at ...>}
+
 Future Work
 -----------
 

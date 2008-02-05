@@ -65,7 +65,7 @@ class Response(BrowserResponse):
         return response
 
     def _implicitResult(self, body):
-        #figure out the content type
+        # figure out the content type
         content_type = self.getHeader('content-type')
         if content_type is None:
             if isHTML(body):

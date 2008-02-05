@@ -1,6 +1,6 @@
 ##############################################################################
 #
-# Copyright (c) 2001, 2002 Zope Corporation and Contributors.
+# Copyright (c) 2004 Zope Corporation and Contributors.
 # All Rights Reserved.
 #
 # This software is subject to the provisions of the Zope Public License,
@@ -11,17 +11,9 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-"""Resource Library Expression Type
 
-$Id: tal.py 3268 2005-08-22 23:31:27Z benji $
-"""
-from zope.tales.expressions import StringExpr
+from zope.interface import Interface
 
-import zc.resourcelibrary
-
-class ResourceLibraryExpression(StringExpr):
-    """Resource library expression handler class"""
-
-    def __call__(self, econtext):
-        zc.resourcelibrary.need(self._expr)
-        return ''
+class IResourceManager(Interface):
+    def getBundlesForLibrary(library_name):
+        """Return the list of bundles that are required by the library."""

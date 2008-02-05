@@ -2,13 +2,13 @@ import doctest
 import unittest
 from zope.testing.doctestunit import DocTestSuite
 
-from zc.resourcelibrary import resourcelibrary
-from zc.resourcelibrary.resourcelibrary import LibraryInfo
-
+from zc.resourcelibrary import resources
+from zc.resourcelibrary.resources import LibraryInfo
 
 def setUp(test):
-    test.old_library_info = resourcelibrary.library_info
-    resourcelibrary.library_info = library_info = {}
+    test.old_library_info = resources.library_info
+    resources.library_info = library_info = {}
+
     # Dependencies:
     #
     #  libA   libD
@@ -27,8 +27,7 @@ def setUp(test):
 
 
 def tearDown(test):
-    resourcelibrary.library_info = test.old_library_info
-
+    resources.library_info = test.old_library_info
 
 def doctest_dependency_resolution():
     """Test Response._addDependencies
@@ -66,6 +65,7 @@ def test_suite():
     return unittest.TestSuite(
         (
         DocTestSuite(setUp=setUp, tearDown=tearDown),
+        DocTestSuite('zc.resourcelibrary.resources'),
         DocTestSuite('zc.resourcelibrary.publication',
                      optionflags=doctest.NORMALIZE_WHITESPACE|doctest.ELLIPSIS,
                      ),

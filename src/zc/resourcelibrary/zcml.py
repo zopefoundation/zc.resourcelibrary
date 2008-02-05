@@ -11,7 +11,8 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-from zc.resourcelibrary.resourcelibrary import LibraryInfo, library_info
+
+from zc.resourcelibrary.resources import LibraryInfo, library_info
 from zope.app import zapi
 from zope.app.publisher.browser import directoryresource
 from zope.app.publisher.browser.metadirectives import IBasicResourceInformation
@@ -104,10 +105,13 @@ class ResourceLibrary(object):
                     'Resource library doesn\'t know how to include this '
                     'file: "%s".' % file_name)
 
+        library_info[self.name].path = _context.path(source)
+        
         # remember which files should be included in the HTML when this library
         # is referenced
         library_info[self.name].included.extend(include)
 
+        # register this directory as a browser resource
         factory = directoryresource.DirectoryResourceFactory(
             source, self.checker, self.name)
 
