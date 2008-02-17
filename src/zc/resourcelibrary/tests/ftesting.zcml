@@ -20,7 +20,7 @@
   <include package="zope.app.securitypolicy" file="meta.zcml"/>
 
   <securityPolicy
-      component="zope.app.securitypolicy.zopepolicy.ZopeSecurityPolicy" />
+      component="zope.securitypolicy.zopepolicy.ZopeSecurityPolicy" />
 
   <role id="zope.Anonymous" title="Everybody"
         description="All users have this role implicitly" />
