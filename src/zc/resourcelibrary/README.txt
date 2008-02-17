@@ -324,6 +324,44 @@ occurrence of "<head>" has the script tag inserted...
     >>> browser.contents.count('src="http://localhost/@@/my-lib/included.js"')
     1
 
+Custom "directory" factories
+----------------------------
+
+By default, a resource directory is created when a directory directive
+is used.  You can add a factory option to specify a different
+resource-directory factory.  This can be used, for example, to provide
+dynamic resources.
+
+
+    >>> zcml("""
+    ... <configure
+    ...     xmlns="http://namespaces.zope.org/zope"
+    ...     package="zc.resourcelibrary">
+    ...
+    ...   <resourceLibrary name="my-lib">
+    ...     <directory
+    ...         source="tests/example/my-lib"
+    ...         include="foo.js"
+    ...         factory="zc.resourcelibrary.tests.tests.TestFactory"
+    ...     />
+    ...   </resourceLibrary>
+    ...
+    ... </configure>
+    ... """)
+
+The factory will be called with a source directory, a security checker
+and a name.  We've created a class that implements a resource
+directory dynamically.
+
+    >>> browser.open('http://localhost/zc.resourcelibrary.test_template_2')
+    >>> '/@@/my-lib/foo.js' in browser.contents
+    True
+
+    >>> browser.open('http://localhost/@@/my-lib/foo.js')
+    >>> print browser.contents,
+    foo = 1;
+
+
 Future Work
 -----------
 

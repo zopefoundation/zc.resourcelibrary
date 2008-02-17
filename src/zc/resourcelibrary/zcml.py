@@ -64,6 +64,11 @@ class IDirectoryDirective(Interface):
         value_type=zope.schema.Text(),
         )
 
+    factory = zope.configuration.fields.GlobalObject(
+        title=u"Factory",
+        description=u"Alternate directory-resource factory",
+        required=False,
+        )
 
 def handler(name, dependencies, required, provided, adapter_name, factory, info=''):
     if dependencies:
@@ -93,7 +98,7 @@ class ResourceLibrary(object):
         library_info[name] = LibraryInfo()
         library_info[name].required.extend(require)
 
-    def directory(self, _context, source, include=()):
+    def directory(self, _context, source, include=(), factory=None):
         if not os.path.isdir(source):
             raise ConfigurationError("Directory %r does not exist" % source)
 
@@ -108,8 +113,9 @@ class ResourceLibrary(object):
         # is referenced
         library_info[self.name].included.extend(include)
 
-        factory = directoryresource.DirectoryResourceFactory(
-            source, self.checker, self.name)
+        if factory is None:
+            factory = directoryresource.DirectoryResourceFactory
+        factory = factory(source, self.checker, self.name)
 
         _context.action(
             discriminator = ('resource', self.name, IBrowserRequest, self.layer),

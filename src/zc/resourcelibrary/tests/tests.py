@@ -19,11 +19,35 @@ from zc.resourcelibrary import publication
 from zc.resourcelibrary import tal
 from zope.app.testing import functional
 from zope.configuration import xmlconfig
+import zope.interface
 from zope.pagetemplate import pagetemplate
+import zope.publisher.interfaces.browser
 import doctest
 import os
 import unittest
 import zope.security.management
+
+
+
+class TestFactory:
+
+    zope.interface.implements(
+        zope.publisher.interfaces.browser.IBrowserPublisher)
+
+    def __init__(self, source, checker, name):
+        self.__Security_checker__ = checker
+
+    def __call__(self, request):
+        return self
+    
+    def publishTraverse(self, request, name):
+        return getattr(self, name.replace('.', '_'))
+
+    def foo_js(self):
+        return 'foo = 1;\n'
+
+                       
+
 
 #### testing framework ####
 
