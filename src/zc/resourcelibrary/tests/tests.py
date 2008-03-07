@@ -22,6 +22,7 @@ from zope.configuration import xmlconfig
 import zope.interface
 from zope.pagetemplate import pagetemplate
 import zope.publisher.interfaces.browser
+from zope.testing import doctest
 import doctest
 import os
 import unittest
@@ -93,6 +94,20 @@ def zpt(s, view=None, content_type=None):
         request.response.setResult(html)
         return request.response.consumeBody()
 
+#### tests ####
+
+def test_empty_body():
+    """
+    If a response body is not html, guess that it is text/plain.  This
+    follows the behavior of zope.publication's trunk as of this writing.
+    
+    >>> import zc.resourcelibrary.publication
+    >>> response = zc.resourcelibrary.publication.Response()
+    >>> response.setResult('')
+    >>> response.getHeader('content-type')
+    'text/plain'
+    """
+
 #### test setup ####
 
 ResourceLibraryFunctionalLayer = functional.ZCMLLayer(
@@ -106,7 +121,10 @@ def test_suite():
         optionflags=doctest.NORMALIZE_WHITESPACE+doctest.ELLIPSIS,
         )
     suite.layer = ResourceLibraryFunctionalLayer
-    return suite
+    return unittest.TestSuite((
+        suite,
+        doctest.DocTestSuite()
+        ))
 
 if __name__ == '__main__':
     unittest.main(defaultTest='test_suite')

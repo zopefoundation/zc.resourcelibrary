@@ -2,6 +2,17 @@
 CHANGES
 =======
 
+1.0.1 (2008-03-07)
+------------------
+
+Bugs fixed:
+
+- added the behavior from the standard Zope 3 response to guess that a body
+  that is not HTML without an explicit mimetype should have a
+  'text/plain' mimetype.  This means that, for instance, redirects with
+  a body of '' and no explicit content type will no longer cause an
+  exception in the resourcelibrary response code.
+
 1.0.0 (2008-02-17)
 ------------------
 

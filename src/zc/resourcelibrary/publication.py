@@ -70,6 +70,10 @@ class Response(BrowserResponse):
         if content_type is None:
             if isHTML(body):
                 content_type = 'text/html'
+            else:
+                content_type = 'text/plain'
+            self.setHeader('x-content-type-warning', 'guessed from content')
+            self.setHeader('content-type', content_type)
 
         # check the content type disregarding parameters and case
         if content_type and content_type.split(';', 1)[0].lower() in (
