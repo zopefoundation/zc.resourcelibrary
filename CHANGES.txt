@@ -2,7 +2,12 @@
 CHANGES
 =======
 
-1.0.2 (unreleased)
+1.0.3 (unreleased)
+------------------
+
+- ...
+
+1.0.2 (2009-01-27)
 ------------------
 
 - Remove zope.app.zapi from dependencies, substituting
