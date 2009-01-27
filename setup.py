@@ -29,7 +29,7 @@ setup(name='zc.resourcelibrary',
       long_description=(
           read('README.txt')
           + '\n\n' +
-          'Detailed Dcoumentation\n' +
+          'Detailed Documentation\n' +
           '======================\n'
           + '\n\n' +
           read('src', 'zc', 'resourcelibrary', 'README.txt')
