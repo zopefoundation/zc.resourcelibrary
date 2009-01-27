@@ -12,11 +12,11 @@
 #
 ##############################################################################
 from zc.resourcelibrary.resourcelibrary import LibraryInfo, library_info
-from zope.app import zapi
 from zope.app.publisher.browser import directoryresource
 from zope.app.publisher.browser.metadirectives import IBasicResourceInformation
 from zope.app.publisher.browser.resourcemeta import allowed_names
 from zope.configuration.exceptions import ConfigurationError
+from zope.component import getGlobalSiteManager
 from zope.interface import Interface
 from zope.publisher.interfaces.browser import IBrowserRequest
 from zope.publisher.interfaces.browser import IDefaultBrowserLayer
@@ -77,7 +77,7 @@ def handler(name, dependencies, required, provided, adapter_name, factory, info=
                 raise ConfigurationError(
                     'Resource library "%s" has unsatisfied dependency on "%s".'
                     % (name, dep))
-    zapi.getGlobalSiteManager().registerAdapter(
+    getGlobalSiteManager().registerAdapter(
         factory, required, provided, adapter_name, info)
 
 
