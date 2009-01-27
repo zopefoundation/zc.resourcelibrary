@@ -86,8 +86,12 @@ class Response(BrowserResponse):
             if html:
                 # This is a pretty low-rent way of adding things to the head.
                 # We should probably use a real HTML parser instead.
-                body = body.replace('<head>', '<head>\n    %s\n' %
-                                    html, 1)
+                marker = body.find('<!-- zc.resourcelibrary -->')
+                if marker != -1:
+                    body = body[:marker] + html + body[marker+27:]
+                else:
+                    body = body.replace('<head>', '<head>\n    %s\n' %
+                                        html, 1)
 
         return super(Response, self)._implicitResult(body)
 

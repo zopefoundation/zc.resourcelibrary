@@ -361,6 +361,30 @@ directory dynamically.
     >>> print browser.contents,
     foo = 1;
 
+Library insertion place marker
+------------------------------
+
+You can explicitly mark where to insert HTML. Do do that, add the
+special comment "<!-- zc.resourcelibrary -->" (exact string, w/o quotes)
+to the template. It will be replaced by resource libraries HTML on
+processing.
+
+    >>> browser.open('http://localhost/zc.resourcelibrary.test_template_6')
+
+A reference to the JavaScript is inserted into the HTML.
+
+    >>> print browser.contents
+    <html>
+      <head>
+        <title>Marker test</title>
+    <BLANKLINE>
+        <!-- Libraries will be included below -->
+        <script src="http://localhost/@@/my-lib/foo.js" 
+            type="text/javascript">
+        </script>
+      </head>
+    ...
+    </html>
 
 Future Work
 -----------

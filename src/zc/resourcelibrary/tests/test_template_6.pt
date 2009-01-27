@@ -1,0 +1,11 @@
+<html>
+  <head>
+    <title>Marker test</title>
+
+    <!-- Libraries will be included below -->
+    <!-- zc.resourcelibrary -->
+  </head>
+  <body>
+    <tal:block replace="structure resource_library:my-lib"/>
+  </body>
+</html>

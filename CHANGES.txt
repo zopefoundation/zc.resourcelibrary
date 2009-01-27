@@ -2,10 +2,13 @@
 CHANGES
 =======
 
-1.0.3 (unreleased)
+1.1.0 (unreleased)
 ------------------
 
-- ...
+New features:
+
+- You can now explicitly specify where resource links should be
+  inserted using the special marker comment '<!-- zc.resourcelibrary -->'.
 
 1.0.2 (2009-01-27)
 ------------------
