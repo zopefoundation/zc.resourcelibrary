@@ -2,6 +2,14 @@
 CHANGES
 =======
 
+1.0.2 (unreleased)
+------------------
+
+- Use zope-dev at zope.org mailing list address instead of
+  zope3-dev at zope.org as the latter one is retired.
+
+- Change "cheeseshop" to "pypi" in the package homepage.
+
 1.0.1 (2008-03-07)
 ------------------
 
