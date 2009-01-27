@@ -5,6 +5,9 @@ CHANGES
 1.0.2 (unreleased)
 ------------------
 
+- Remove zope.app.zapi from dependencies, substituting
+  its uses with direct imports.
+
 - Use zope-dev at zope.org mailing list address instead of
   zope3-dev at zope.org as the latter one is retired.
 
