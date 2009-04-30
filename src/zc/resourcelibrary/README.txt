@@ -149,6 +149,7 @@ would not otherwise include a resource library...
     ...         'This is the body.</body>')
 
     >>> class View(object):
+    ...     context = getRootFolder()
     ...     def doSomething(self):
     ...         pass
 
@@ -160,6 +161,7 @@ be included.
 
     >>> import zc.resourcelibrary
     >>> class View(object):
+    ...     context = getRootFolder()
     ...     def doSomething(self):
     ...         zc.resourcelibrary.need('my-lib')
 

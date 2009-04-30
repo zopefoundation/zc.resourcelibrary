@@ -18,6 +18,8 @@ from StringIO import StringIO
 from zc.resourcelibrary import publication
 from zc.resourcelibrary import tal
 from zope.app.testing import functional
+from zope.app.component.hooks import setSite
+from zope.app.component.hooks import getSite
 from zope.configuration import xmlconfig
 import zope.interface
 from zope.pagetemplate import pagetemplate
@@ -36,10 +38,14 @@ class TestFactory:
         zope.publisher.interfaces.browser.IBrowserPublisher)
 
     def __init__(self, source, checker, name):
+        self.name = name
         self.__Security_checker__ = checker
 
     def __call__(self, request):
         return self
+
+    def __getitem__(self, name):
+        return lambda: "http://localhost/@@/%s/%s" % (self.name, name)
     
     def publishTraverse(self, request, name):
         return getattr(self, name.replace('.', '_'))
@@ -47,7 +53,6 @@ class TestFactory:
     def foo_js(self):
         return 'foo = 1;\n'
 
-                       
 
 
 #### testing framework ####
@@ -59,7 +64,6 @@ def zcml(s, execute=True):
     except:
         context.end()
         raise
-
 
 class TestPageTemplate(pagetemplate.PageTemplate):
     def __init__(self, view):
@@ -75,6 +79,11 @@ class TestPageTemplate(pagetemplate.PageTemplate):
 def zpt(s, view=None, content_type=None):
     request = publication.Request(body_instream=StringIO(''), environ={})
     zope.security.management.newInteraction(request)
+
+    # if no set has been set, try setting it the view context
+    if getSite() is None and hasattr(view, 'context'):
+        setSite(view.context)
+
     pt = TestPageTemplate(view)
 
     # if the resource library expression hasn't been registered, do so

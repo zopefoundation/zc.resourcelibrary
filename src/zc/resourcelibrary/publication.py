@@ -16,10 +16,15 @@ $Id: publication.py 4528 2005-12-23 02:45:25Z gary $
 """
 from zope import interface
 from zope.app.publication.interfaces import IBrowserRequestFactory
+from zope.app.publisher.browser.resource import Resource
+from zope.publisher.interfaces.browser import IBrowserPublisher
 from zope.publisher.browser import BrowserRequest, BrowserResponse
 from zope.publisher.browser import isHTML
+from zope.location.interfaces import ISite
 from zope.app.component.hooks import getSite
+from zope.component import queryMultiAdapter
 from zope.component import getMultiAdapter
+from zope.component import getSiteManager
 from zope.traversing.browser.interfaces import IAbsoluteURL
 
 import zc.resourcelibrary
@@ -97,28 +102,54 @@ class Response(BrowserResponse):
 
     def _generateIncludes(self, libraries):
         # generate the HTML that will be included in the response
-        html = []
         site = getSite()
-        baseURL = str(getMultiAdapter((site, self._request),
-                                      IAbsoluteURL))
+        if site is None:
+            raise RuntimeError(
+                "Unable to locate resources; no site has been set.")
 
+        # look up resources view factory
+        factory = getSiteManager().adapters.lookup(
+            (ISite, interface.providedBy(self._request)),
+            interface.Interface, name="")
+
+        if IBrowserPublisher.implementedBy(factory):
+            resources = factory(site, self._request)
+        else:
+            # a setup with no resources factory is supported; in this
+            # case, we manually craft a URL to the resource publisher
+            # (see ``zope.app.publisher.browser.resource``).
+            resources = None
+            base = queryMultiAdapter(
+                (site, self._request), IAbsoluteURL, name="resource")
+            if base is None: 
+                baseURL = str(getMultiAdapter(
+                    (site, self._request), IAbsoluteURL))
+            else:
+                baseURL = str(base)
+
+        html = []
         for lib in libraries:
+            if resources is not None:
+                library_resources = resources[lib]
+
             included = zc.resourcelibrary.getIncluded(lib)
             for file_name in included:
+                if resources is not None:
+                    url = library_resources[file_name]()
+                else:
+                    url = "%s/@@/%s/%s" % (baseURL, lib, file_name)
                 if file_name.endswith('.js'):
-                    html.append('<script src="%s/@@/%s/%s" '
-                                % (baseURL, lib, file_name))
+                    html.append('<script src="%s" ' % url)
                     html.append('    type="text/javascript">')
                     html.append('</script>')
                 elif file_name.endswith('.css'):
                     html.append('<style type="text/css" media="all">')
                     html.append('  <!--')
-                    html.append('    @import url("%s/@@/%s/%s");'
-                                % (baseURL, lib, file_name))
+                    html.append('    @import url("%s");' % url)
                     html.append('  -->')
                     html.append('</style>')
                 elif file_name.endswith('.kss'):
-                    html.append('<link type="text/kss" href="%s/@@/%s/%s" rel="kinetic-stylesheet" />' % (baseURL, lib, file_name))
+                    html.append('<link type="text/kss" href="%s" rel="kinetic-stylesheet" />' % url)
                 else:
                     # shouldn't get here; zcml.py is supposed to check includes
                     raise RuntimeError('Resource library doesn\'t know how to '

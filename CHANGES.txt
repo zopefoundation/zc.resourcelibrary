@@ -7,6 +7,12 @@ CHANGES
 
 New features:
 
+- An attempt to generate resource URLs using the "resources view" (@@)
+  is now made; if unsuccesful, we fall back to the previous method of
+  crafting the URL by hand from the site url. This ensures that the
+  resource library respects the existing plugging points for resource
+  publishing (see ``zope.app.publisher.browser.resources``).
+
 - You can now explicitly specify where resource links should be
   inserted using the special marker comment '<!-- zc.resourcelibrary -->'.
 
