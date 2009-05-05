@@ -104,9 +104,8 @@ class Response(BrowserResponse):
         # generate the HTML that will be included in the response
         site = getSite()
         if site is None:
-            raise RuntimeError(
-                "Unable to locate resources; no site has been set.")
-
+            return None
+        
         # look up resources view factory
         factory = getSiteManager().adapters.lookup(
             (ISite, interface.providedBy(self._request)),
