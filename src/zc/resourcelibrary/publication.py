@@ -104,7 +104,7 @@ class Response(BrowserResponse):
         # generate the HTML that will be included in the response
         site = getSite()
         if site is None:
-            return None
+            return
         
         # look up resources view factory
         factory = getSiteManager().adapters.lookup(

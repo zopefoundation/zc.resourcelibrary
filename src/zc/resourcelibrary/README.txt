@@ -168,7 +168,6 @@ be included.
     >>> '/@@/my-lib/included.js' in zpt(page, view=View())
     True
 
-
 Content-type checking
 ---------------------
 
@@ -325,6 +324,22 @@ occurrence of "<head>" has the script tag inserted...
 
     >>> browser.contents.count('src="http://localhost/@@/my-lib/included.js"')
     1
+
+Error during publishing
+-----------------------
+    
+Note that in case an exception is raised during publishing, the
+resource library is disabled.
+
+    >>> browser.handleErrors = True
+    >>> browser.post(
+    ...    'http://localhost/zc.resourcelibrary.test_template_5',
+    ...    'value:int=dummy', 'multipart/form-data')
+    Traceback (most recent call last):
+     ...
+    HTTPError: ...
+    >>> '/@@/my-lib/included.js' in browser.contents
+    False
 
 Custom "directory" factories
 ----------------------------
