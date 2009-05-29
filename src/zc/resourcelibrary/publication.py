@@ -21,7 +21,7 @@ from zope.publisher.interfaces.browser import IBrowserPublisher
 from zope.publisher.browser import BrowserRequest, BrowserResponse
 from zope.publisher.browser import isHTML
 from zope.location.interfaces import ISite
-from zope.app.component.hooks import getSite
+from zope.site.hooks import getSite
 from zope.component import queryMultiAdapter
 from zope.component import getMultiAdapter
 from zope.component import getSiteManager

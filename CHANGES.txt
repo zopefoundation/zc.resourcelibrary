@@ -2,6 +2,12 @@
 CHANGES
 =======
 
+1.1.1 (unreleased)
+------------------
+
+- Use ``zope.site`` instead of ``zope.app.component``.  Removes direct
+  dependency on ``zope.app.component``.
+
 1.1.0 (2009-05-05)
 ------------------
 

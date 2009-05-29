@@ -18,9 +18,9 @@ from StringIO import StringIO
 from zc.resourcelibrary import publication
 from zc.resourcelibrary import tal
 from zope.app.testing import functional
-from zope.app.component.hooks import setSite
-from zope.app.component.hooks import getSite
+from zope.site.hooks import getSite
 from zope.configuration import xmlconfig
+from zope.site.hooks import setSite
 import zope.interface
 from zope.pagetemplate import pagetemplate
 import zope.publisher.interfaces.browser
@@ -29,7 +29,6 @@ import doctest
 import os
 import unittest
 import zope.security.management
-
 
 
 class TestFactory:
