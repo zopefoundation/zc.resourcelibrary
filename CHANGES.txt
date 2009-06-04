@@ -2,7 +2,7 @@
 CHANGES
 =======
 
-1.1.1 (unreleased)
+1.2.0 (2009-06-04)
 ------------------
 
 - Use ``zope.site`` instead of ``zope.app.component``.  Removes direct
