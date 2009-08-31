@@ -11,18 +11,21 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
-from zc.resourcelibrary.resourcelibrary import LibraryInfo, library_info
-from zope.app.publisher.browser import directoryresource
-from zope.app.publisher.browser.metadirectives import IBasicResourceInformation
-from zope.app.publisher.browser.resourcemeta import allowed_names
-from zope.configuration.exceptions import ConfigurationError
+import os.path
+
+from zope.browserresource.directory import DirectoryResourceFactory
+from zope.browserresource.metadirectives import IBasicResourceInformation
+from zope.browserresource.metaconfigure import allowed_names
 from zope.component import getGlobalSiteManager
+from zope.configuration.exceptions import ConfigurationError
 from zope.interface import Interface
 from zope.publisher.interfaces.browser import IBrowserRequest
 from zope.publisher.interfaces.browser import IDefaultBrowserLayer
 from zope.security.checker import CheckerPublic, NamesChecker
-import os.path
 import zope.configuration.fields
+
+from zc.resourcelibrary.resourcelibrary import LibraryInfo, library_info
+
 
 class IResourceLibraryDirective(IBasicResourceInformation):
     """
@@ -114,7 +117,7 @@ class ResourceLibrary(object):
         library_info[self.name].included.extend(include)
 
         if factory is None:
-            factory = directoryresource.DirectoryResourceFactory
+            factory = DirectoryResourceFactory
         factory = factory(source, self.checker, self.name)
 
         _context.action(

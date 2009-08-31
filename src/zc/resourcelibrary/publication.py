@@ -16,15 +16,13 @@ $Id: publication.py 4528 2005-12-23 02:45:25Z gary $
 """
 from zope import interface
 from zope.app.publication.interfaces import IBrowserRequestFactory
-from zope.app.publisher.browser.resource import Resource
-from zope.publisher.interfaces.browser import IBrowserPublisher
+from zope.browserresource.resource import Resource
+from zope.component import queryMultiAdapter, getMultiAdapter, getSiteManager
+from zope.location.interfaces import ISite
 from zope.publisher.browser import BrowserRequest, BrowserResponse
 from zope.publisher.browser import isHTML
-from zope.location.interfaces import ISite
+from zope.publisher.interfaces.browser import IBrowserPublisher
 from zope.site.hooks import getSite
-from zope.component import queryMultiAdapter
-from zope.component import getMultiAdapter
-from zope.component import getSiteManager
 from zope.traversing.browser.interfaces import IAbsoluteURL
 
 import zc.resourcelibrary
@@ -116,7 +114,7 @@ class Response(BrowserResponse):
         else:
             # a setup with no resources factory is supported; in this
             # case, we manually craft a URL to the resource publisher
-            # (see ``zope.app.publisher.browser.resource``).
+            # (see ``zope.browserresource.resource``).
             resources = None
             base = queryMultiAdapter(
                 (site, self._request), IAbsoluteURL, name="resource")
