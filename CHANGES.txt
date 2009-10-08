@@ -8,6 +8,9 @@ CHANGES
 - Use ``zope.browserresource`` instead of ``zope.app.publisher``, removing
   a dependency on latter.
 
+- Look up the "resources view" via queryMultiAdapter instead of looking into
+  the adapter registry.
+
 
 1.2.0 (2009-06-04)
 ------------------

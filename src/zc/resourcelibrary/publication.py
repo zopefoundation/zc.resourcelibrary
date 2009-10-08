@@ -103,15 +103,11 @@ class Response(BrowserResponse):
         site = getSite()
         if site is None:
             return
-        
-        # look up resources view factory
-        factory = getSiteManager().adapters.lookup(
-            (ISite, interface.providedBy(self._request)),
-            interface.Interface, name="")
 
-        if IBrowserPublisher.implementedBy(factory):
-            resources = factory(site, self._request)
-        else:
+        resources = queryMultiAdapter(
+            (site, self._request), interface.Interface, name='')
+
+        if not IBrowserPublisher.providedBy(resources):
             # a setup with no resources factory is supported; in this
             # case, we manually craft a URL to the resource publisher
             # (see ``zope.browserresource.resource``).
