@@ -11,6 +11,7 @@ CHANGES
 - Look up the "resources view" via queryMultiAdapter instead of looking into
   the adapter registry.
 
+- Moved the dependency on zope.site to the test dependencies.
 
 1.2.0 (2009-06-04)
 ------------------
