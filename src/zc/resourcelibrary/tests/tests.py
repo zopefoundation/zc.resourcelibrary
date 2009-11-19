@@ -18,9 +18,7 @@ from StringIO import StringIO
 from zc.resourcelibrary import publication
 from zc.resourcelibrary import tal
 from zope.app.testing import functional
-from zope.site.hooks import getSite
 from zope.configuration import xmlconfig
-from zope.site.hooks import setSite
 import zope.interface
 from zope.pagetemplate import pagetemplate
 import zope.publisher.interfaces.browser
@@ -28,6 +26,7 @@ from zope.testing import doctest
 import doctest
 import os
 import unittest
+import zope.component.hooks
 import zope.security.management
 
 
@@ -80,8 +79,8 @@ def zpt(s, view=None, content_type=None):
     zope.security.management.newInteraction(request)
 
     # if no set has been set, try setting it the view context
-    if getSite() is None and hasattr(view, 'context'):
-        setSite(view.context)
+    if zope.component.hooks.getSite() is None and hasattr(view, 'context'):
+        zope.component.hooks.setSite(view.context)
 
     pt = TestPageTemplate(view)
 

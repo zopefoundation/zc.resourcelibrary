@@ -18,14 +18,13 @@ from zope import interface
 from zope.app.publication.interfaces import IBrowserRequestFactory
 from zope.browserresource.resource import Resource
 from zope.component import queryMultiAdapter, getMultiAdapter, getSiteManager
-from zope.location.interfaces import ISite
 from zope.publisher.browser import BrowserRequest, BrowserResponse
 from zope.publisher.browser import isHTML
 from zope.publisher.interfaces.browser import IBrowserPublisher
-from zope.site.hooks import getSite
 from zope.traversing.browser.interfaces import IAbsoluteURL
 
 import zc.resourcelibrary
+import zope.component.hooks
 
 
 class Request(BrowserRequest):
@@ -100,7 +99,7 @@ class Response(BrowserResponse):
 
     def _generateIncludes(self, libraries):
         # generate the HTML that will be included in the response
-        site = getSite()
+        site = zope.component.hooks.getSite()
         if site is None:
             return
 
