@@ -36,6 +36,35 @@ class Request(BrowserRequest):
         self.resource_libraries = response.resource_libraries = []
         return response
 
+    def retry(self):
+        """Returns request object to be used in a retry attempt.
+
+        In addition to BrowswerRequest's retry() the libraries are copied over
+        to the new request. Otherwise it is not possible to add even new
+        libraries to a retried request.
+
+        >>> import StringIO
+        >>> request = Request(StringIO.StringIO(), {})
+        >>> request.resource_libraries = ['foo']
+        >>> retry_request = request.retry()
+        >>> retry_request is request
+        False
+        >>> request.resource_libraries is retry_request.resource_libraries
+        True
+        
+        The assigned libraries are flushed because a new request will define
+        its own set of required librarires.
+
+        >>> request.resource_libraries
+        []
+
+        """
+        request = super(Request, self).retry()
+        if hasattr(self, 'resource_libraries'):
+            request.resource_libraries = self.resource_libraries
+            request.resource_libraries[:] = []
+        return request
+
 
 class Response(BrowserResponse):
 
