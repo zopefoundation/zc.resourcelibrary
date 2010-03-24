@@ -1,6 +1,5 @@
 import doctest
 import unittest
-from zope.testing.doctestunit import DocTestSuite
 
 from zc.resourcelibrary import resourcelibrary
 from zc.resourcelibrary.resourcelibrary import LibraryInfo
@@ -65,8 +64,8 @@ def doctest_dependency_resolution():
 def test_suite():
     return unittest.TestSuite(
         (
-        DocTestSuite(setUp=setUp, tearDown=tearDown),
-        DocTestSuite('zc.resourcelibrary.publication',
+        doctest.DocTestSuite(setUp=setUp, tearDown=tearDown),
+        doctest.DocTestSuite('zc.resourcelibrary.publication',
                      optionflags=doctest.NORMALIZE_WHITESPACE|doctest.ELLIPSIS,
                      ),
         ))
