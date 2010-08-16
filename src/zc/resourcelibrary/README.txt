@@ -288,6 +288,35 @@ appear before the dependent library in the page
     >>> print browser.contents.strip()
     <html>...dependency/2.css...dependent/1.js...</html>
 
+It is possible for a resource library to only register a list of dependencies
+and not specify any resources.
+
+When such a library is used in a resource_library statement in a template,
+only its dependencies are referenced in the final rendered page.
+
+    >>> zcml("""
+    ... <configure
+    ...     xmlns="http://namespaces.zope.org/zope"
+    ...     package="zc.resourcelibrary">
+    ...
+    ...   <resourceLibrary name="only_require" require="my-lib dependent"/>
+    ...
+    ... </configure>
+    ... """)
+    >>> zpt('<tal:block replace="resource_library:only_require"/>')
+    >>> browser.open('http://localhost/zc.resourcelibrary.test_template_7')
+    >>> '/@@/my-lib/included.js' in browser.contents
+    True
+    >>> '/@@/my-lib/included.css' in browser.contents
+    True
+    >>> '/@@/dependent/1.js' in browser.contents
+    True
+    >>> '/@@/dependency/2.css' in browser.contents
+    True
+    >>> '/@@/only_require' in browser.contents
+    False
+
+
 Error Conditions
 ----------------
 
@@ -327,7 +356,7 @@ occurrence of "<head>" has the script tag inserted...
 
 Error during publishing
 -----------------------
-    
+
 Note that in case an exception is raised during publishing, the
 resource library is disabled.
 
@@ -396,7 +425,7 @@ A reference to the JavaScript is inserted into the HTML.
         <title>Marker test</title>
     <BLANKLINE>
         <!-- Libraries will be included below -->
-        <script src="http://localhost/@@/my-lib/foo.js" 
+        <script src="http://localhost/@@/my-lib/foo.js"
             type="text/javascript">
         </script>
       </head>

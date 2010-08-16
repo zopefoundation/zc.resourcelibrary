@@ -5,8 +5,15 @@ CHANGES
 1.3.2 (unreleased)
 ------------------
 
-- Nothing changed yet.
+- Response._addDependencies will only include a ResourceLibrary in the
+  list of dependencies if the ResourceLibrary actually has included
+  resources.
 
+  This makes directives that simply declare dependencies on other
+  libraries work again.
+
+- Add missing depedency on zope.app.pagetemplate, clean up unused
+  imports and whitespace.
 
 1.3.1 (2010-03-24)
 ------------------
@@ -85,7 +92,7 @@ New features:
 
 Bugs fixed:
 
-- Updated the functional-testing zcml file to get rid of a deprication
+- Updated the functional-testing zcml file to get rid of a deprecation
   warning.
 
 

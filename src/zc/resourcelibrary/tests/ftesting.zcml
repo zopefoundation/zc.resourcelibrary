@@ -77,4 +77,11 @@
       template="test_template_6.pt"
       />
 
+  <browser:page
+      for="zope.app.folder.interfaces.IFolder"
+      name="zc.resourcelibrary.test_template_7"
+      permission="zope.View"
+      template="test_template_7.pt"
+      />
+
 </configure>
