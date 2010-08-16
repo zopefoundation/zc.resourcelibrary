@@ -81,7 +81,7 @@ def handler(name, dependencies, required, provided, adapter_name, factory, info=
         factory, required, provided, adapter_name, info)
 
 
-INCLUDABLE_EXTENTIONS = ('.js', '.css', '.kss')
+INCLUDABLE_EXTENSIONS = ('.js', '.css', '.kss')
 
 class ResourceLibrary(object):
 
@@ -104,7 +104,7 @@ class ResourceLibrary(object):
 
         for file_name in include:
             ext = os.path.splitext(file_name)[1]
-            if ext not in INCLUDABLE_EXTENTIONS:
+            if ext not in INCLUDABLE_EXTENSIONS:
                 raise ConfigurationError(
                     'Resource library doesn\'t know how to include this '
                     'file: "%s".' % file_name)

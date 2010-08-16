@@ -24,7 +24,6 @@ from zope.site.hooks import setSite
 import zope.interface
 from zope.pagetemplate import pagetemplate
 import zope.publisher.interfaces.browser
-from zope.testing import doctest
 import doctest
 import os
 import unittest
@@ -45,7 +44,7 @@ class TestFactory:
 
     def __getitem__(self, name):
         return lambda: "http://localhost/@@/%s/%s" % (self.name, name)
-    
+
     def publishTraverse(self, request, name):
         return getattr(self, name.replace('.', '_'))
 
@@ -108,7 +107,7 @@ def test_empty_body():
     """
     If a response body is not html, guess that it is text/plain.  This
     follows the behavior of zope.publication's trunk as of this writing.
-    
+
     >>> import zc.resourcelibrary.publication
     >>> response = zc.resourcelibrary.publication.Response()
     >>> response.setResult('')

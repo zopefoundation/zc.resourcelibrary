@@ -11,19 +11,25 @@ def setUp(test):
     resourcelibrary.library_info = library_info = {}
     # Dependencies:
     #
+    #           libE
+    #            /
     #  libA   libD
     #     \    /
     #    libB /
     #       \/
     #      libC
-    #
-    library_info['libA'] = LibraryInfo()
-    library_info['libA'].required.append('libB')
-    library_info['libB'] = LibraryInfo()
-    library_info['libB'].required.append('libC')
-    library_info['libC'] = LibraryInfo()
-    library_info['libD'] = LibraryInfo()
-    library_info['libD'].required.append('libC')
+    def lib_info(included=None, required=None):
+        res = LibraryInfo()
+        if included:
+            res.included.append(included)
+        if required:
+            res.required.append(required)
+        return res
+    library_info['libA'] = lib_info('foo.js', 'libB')
+    library_info['libB'] = lib_info('bar.js', 'libC')
+    library_info['libC'] = lib_info('baz.js')
+    library_info['libD'] = lib_info('foo.css', 'libC')
+    library_info['libE'] = lib_info(required='libD')
 
 
 def tearDown(test):
@@ -51,6 +57,12 @@ def doctest_dependency_resolution():
 
         >>> r._addDependencies(['libC', 'libA', 'libD', 'libA'])
         ['libC', 'libB', 'libA', 'libD']
+
+    If a library doesn't contain any included resources, only its
+    required libraries will be included in its list of dependencies.
+
+        >>> r._addDependencies(['libE'])
+        ['libC', 'libD']
 
     Unknown library names cause errors
 

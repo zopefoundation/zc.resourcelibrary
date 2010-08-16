@@ -4,6 +4,10 @@
     i18n_domain="zc.resourcelibrary"
     >
 
+  <include package="zope.component" file="meta.zcml"/>
+  <include package="zope.security" file="meta.zcml"/>
+  <include package="zope.app.pagetemplate" file="meta.zcml"/>
+
   <tales:expressiontype
       name="resource_library"
       handler=".tal.ResourceLibraryExpression"

@@ -16,7 +16,6 @@ $Id: publication.py 4528 2005-12-23 02:45:25Z gary $
 """
 from zope import interface
 from zope.app.publication.interfaces import IBrowserRequestFactory
-from zope.app.publisher.browser.resource import Resource
 from zope.publisher.interfaces.browser import IBrowserPublisher
 from zope.publisher.browser import BrowserRequest, BrowserResponse
 from zope.publisher.browser import isHTML
@@ -105,7 +104,7 @@ class Response(BrowserResponse):
         site = getSite()
         if site is None:
             return
-        
+
         # look up resources view factory
         factory = getSiteManager().adapters.lookup(
             (ISite, interface.providedBy(self._request)),
@@ -120,7 +119,7 @@ class Response(BrowserResponse):
             resources = None
             base = queryMultiAdapter(
                 (site, self._request), IAbsoluteURL, name="resource")
-            if base is None: 
+            if base is None:
                 baseURL = str(getMultiAdapter(
                     (site, self._request), IAbsoluteURL))
             else:
@@ -155,7 +154,7 @@ class Response(BrowserResponse):
                                        'include this file: "%s"' % file_name)
 
         return '\n    '.join(html)
-    
+
     def _addDependencies(self, resource_libraries):
         result = []
         def add_lib(lib):
@@ -167,7 +166,8 @@ class Response(BrowserResponse):
                 raise RuntimeError('Unknown resource library: "%s"' % lib)
             for other in required:
                 add_lib(other)
-            result.append(lib)
+            if zc.resourcelibrary.getIncluded(lib):
+                result.append(lib)
         for lib in resource_libraries:
             add_lib(lib)
         return result
