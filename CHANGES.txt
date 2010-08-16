@@ -2,7 +2,7 @@
 CHANGES
 =======
 
-1.3.2 (unreleased)
+1.3.2 (2010-08-16)
 ------------------
 
 - Response._addDependencies will only include a ResourceLibrary in the
