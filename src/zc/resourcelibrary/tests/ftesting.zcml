@@ -8,7 +8,6 @@
   <!-- set up enough of Zope to run the tests -->
 
   <include package="zope.app.zcmlfiles" />
-  <include package="zope.app.authentication" />
 
   <!-- principals -->
 
