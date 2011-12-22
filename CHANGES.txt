@@ -5,6 +5,11 @@ CHANGES
 1.3.3 (unreleased)
 ------------------
 
+- Register adapters with getSiteManager rather than getGlobalSiteManager. This
+  allows registering resource libraries in non-global sites. For detais see:
+   - https://mail.zope.org/pipermail/zope-dev/2010-March/039657.html
+   - http://docs.pylonsproject.org/projects/pyramid_zcml/en/latest/narr.html#using-broken-zcml-directives
+
 - Raise NotImplementedError if we find that a second ZCML declaration would
   change the global library_info dict in a way that may (depending on ZCML
   ordering) break applications at runtime. These errors were pretty hard to

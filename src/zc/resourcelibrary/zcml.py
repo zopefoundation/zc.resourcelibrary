@@ -16,7 +16,7 @@ import os.path
 from zope.browserresource.directory import DirectoryResourceFactory
 from zope.browserresource.metadirectives import IBasicResourceInformation
 from zope.browserresource.metaconfigure import allowed_names
-from zope.component import getGlobalSiteManager
+from zope.component import getSiteManager
 from zope.configuration.exceptions import ConfigurationError
 from zope.interface import Interface
 from zope.publisher.interfaces.browser import IBrowserRequest
@@ -80,7 +80,7 @@ def handler(name, dependencies, required, provided, adapter_name, factory, info=
                 raise ConfigurationError(
                     'Resource library "%s" has unsatisfied dependency on "%s".'
                     % (name, dep))
-    getGlobalSiteManager().registerAdapter(
+    getSiteManager().registerAdapter(
         factory, required, provided, adapter_name, info)
 
 

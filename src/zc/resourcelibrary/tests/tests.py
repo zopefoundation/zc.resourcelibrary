@@ -20,6 +20,7 @@ from zc.resourcelibrary import publication
 from zc.resourcelibrary import tal
 from zope.app.testing import functional
 from zope.configuration import xmlconfig
+from zope.component import getGlobalSiteManager
 import zope.interface
 from zope.pagetemplate import pagetemplate
 import zope.publisher.interfaces.browser
@@ -55,7 +56,8 @@ class TestFactory:
 
 #### testing framework ####
 
-def zcml(s, execute=True, clear=()):
+def zcml(s, execute=True, clear=(), site=None):
+    zope.component.hooks.setSite(site)
     for i in clear:
         del resourcelibrary.library_info[i]
     from zope.app.appsetup.appsetup import __config_context as context
@@ -125,7 +127,9 @@ ResourceLibraryFunctionalLayer = functional.ZCMLLayer(
 
 def test_suite():
     suite = functional.FunctionalDocFileSuite(
-        '../README.txt', 'duplicate_declarations.txt',
+        '../README.txt',
+        'duplicate_declarations.txt',
+        'localsite.txt',
         globs={'zcml': zcml, 'zpt': zpt},
         optionflags=doctest.NORMALIZE_WHITESPACE+doctest.ELLIPSIS,
         )
