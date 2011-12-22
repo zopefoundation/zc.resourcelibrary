@@ -5,6 +5,11 @@ CHANGES
 1.3.3 (unreleased)
 ------------------
 
+- Raise NotImplementedError if we find that a second ZCML declaration would
+  change the global library_info dict in a way that may (depending on ZCML
+  ordering) break applications at runtime. These errors were pretty hard to
+  debug.
+
 - Remove unneeded test dependencies on ``zope.app.authentication`` and
   ``zope.app.securitypolicy``.
 

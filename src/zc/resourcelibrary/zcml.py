@@ -98,6 +98,7 @@ class ResourceLibrary(object):
         self.checker = NamesChecker(allowed_names, permission)
 
         # make note of the library in a global registry
+        self.old_library_info = library_info.get(name)
         library_info[name] = LibraryInfo()
         library_info[name].required.extend(require)
 
@@ -126,3 +127,17 @@ class ResourceLibrary(object):
             args = (self.name, library_info[self.name].required, (self.layer,),
                     Interface, self.name, factory, _context.info),
             )
+    
+    def __call__(self):
+        if self.old_library_info is None:
+            return
+        curr_li = library_info[self.name]
+        if self.old_library_info.included != curr_li.included or \
+            self.old_library_info.required != curr_li.required:
+            raise NotImplementedError(
+                    "Can't cope with 2 different registrations of the same "
+                    "library: %s (%s, %s) (%s, %s)" % (self.name,
+                        self.old_library_info.required,
+                        self.old_library_info.included,
+                        curr_li.required,
+                        curr_li.included))

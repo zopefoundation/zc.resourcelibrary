@@ -393,7 +393,7 @@ dynamic resources.
     ...   </resourceLibrary>
     ...
     ... </configure>
-    ... """)
+    ... """, clear=['my-lib'])
 
 The factory will be called with a source directory, a security checker
 and a name.  We've created a class that implements a resource

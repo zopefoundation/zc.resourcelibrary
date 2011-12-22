@@ -1,0 +1,12 @@
+<configure
+    xmlns="http://namespaces.zope.org/zope"
+    package="zc.resourcelibrary">
+
+  <resourceLibrary name="some-library">
+    <directory
+	source="tests/example"
+	include="1.js"
+	/>
+  </resourceLibrary>
+
+</configure>

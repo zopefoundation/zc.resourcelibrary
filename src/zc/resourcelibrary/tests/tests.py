@@ -15,6 +15,7 @@
 $Id: ntests.py 3330 2005-09-09 23:05:34Z jim $
 """
 from StringIO import StringIO
+from zc.resourcelibrary import resourcelibrary
 from zc.resourcelibrary import publication
 from zc.resourcelibrary import tal
 from zope.app.testing import functional
@@ -54,7 +55,9 @@ class TestFactory:
 
 #### testing framework ####
 
-def zcml(s, execute=True):
+def zcml(s, execute=True, clear=()):
+    for i in clear:
+        del resourcelibrary.library_info[i]
     from zope.app.appsetup.appsetup import __config_context as context
     try:
         xmlconfig.string(s, context, execute=execute)
@@ -122,7 +125,7 @@ ResourceLibraryFunctionalLayer = functional.ZCMLLayer(
 
 def test_suite():
     suite = functional.FunctionalDocFileSuite(
-        '../README.txt',
+        '../README.txt', 'duplicate_declarations.txt',
         globs={'zcml': zcml, 'zpt': zpt},
         optionflags=doctest.NORMALIZE_WHITESPACE+doctest.ELLIPSIS,
         )
