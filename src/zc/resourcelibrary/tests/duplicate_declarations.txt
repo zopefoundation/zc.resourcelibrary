@@ -19,12 +19,11 @@ Now it just errors faster:
     ... </configure>
     ... """)
     Traceback (most recent call last):
-        ...
-    ZopeXMLConfigurationError: File "<string>", line 6.2-8.50
-        ZopeXMLConfigurationError: File "/Users/jinty/src/zc.resourcelibrary/trunk/src/zc/resourcelibrary/tests/duplicate_declarations_overrides.zcml", line 5.2-10.2
+    ...
+    ZopeXMLConfigurationError:...
         NotImplementedError: Can't cope with 2 different registrations of the same library: some-library ([], []) ([], [u'1.js'])
 
-This is what getIncluded woudl have returned if the above had not errored (it
+This is what getIncluded would have returned if the above had not errored (it
 is wrong as includeOverrides should have take precedence):
 
     >>> from zc.resourcelibrary import getIncluded
