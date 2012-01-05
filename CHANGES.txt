@@ -18,6 +18,8 @@ CHANGES
 - Remove unneeded test dependencies on ``zope.app.authentication`` and
   ``zope.app.securitypolicy``.
 
+- Remove dependency on ``zope.app.pagetemplate``.
+
 1.3.2 (2010-08-16)
 ------------------
 

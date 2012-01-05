@@ -1,12 +1,17 @@
 <configure
     xmlns="http://namespaces.zope.org/zope"
     xmlns:tales="http://namespaces.zope.org/tales"
+    xmlns:zcml="http://namespaces.zope.org/zcml"
     i18n_domain="zc.resourcelibrary"
     >
 
   <include package="zope.component" file="meta.zcml"/>
   <include package="zope.security" file="meta.zcml"/>
-  <include package="zope.app.pagetemplate" file="meta.zcml"/>
+  <include 
+      zcml:condition="installed zope.site"
+      package="zope.app.pagetemplate"
+      file="meta.zcml"/>
+  <include package="zope.browserpage" file="meta.zcml"/>
 
   <tales:expressiontype
       name="resource_library"
