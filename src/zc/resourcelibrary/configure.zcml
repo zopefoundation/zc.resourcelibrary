@@ -8,7 +8,7 @@
   <include package="zope.component" file="meta.zcml"/>
   <include package="zope.security" file="meta.zcml"/>
   <include 
-      zcml:condition="installed zope.site"
+      zcml:condition="installed zope.app.pagetemplate"
       package="zope.app.pagetemplate"
       file="meta.zcml"/>
   <include package="zope.browserpage" file="meta.zcml"/>
