@@ -15,7 +15,6 @@
 $Id: publication.py 4528 2005-12-23 02:45:25Z gary $
 """
 from zope import interface
-from zope.app.publication.interfaces import IBrowserRequestFactory
 from zope.component import queryMultiAdapter, getMultiAdapter
 from zope.publisher.browser import BrowserRequest, BrowserResponse
 from zope.publisher.browser import isHTML
@@ -25,6 +24,11 @@ from zope.traversing.browser.interfaces import IAbsoluteURL
 import zc.resourcelibrary
 import zope.component.hooks
 
+try:
+    from zope.app.publication.interfaces import IBrowserRequestFactory
+except:
+    class IBrowserRequestFactory(interface.Interface):
+        pass
 
 class Request(BrowserRequest):
     interface.classProvides(IBrowserRequestFactory)
@@ -97,7 +101,7 @@ class Response(BrowserResponse):
     def _implicitResult(self, body):
         #figure out the content type
         content_type = self.getHeader('content-type')
-        if content_type is None:
+        if content_type is None and self._status != 304:
             if isHTML(body):
                 content_type = 'text/html'
             else:

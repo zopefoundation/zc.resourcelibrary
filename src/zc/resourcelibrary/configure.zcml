@@ -19,6 +19,7 @@
       />
 
   <utility
+      zcml:condition="installed zope.app.publication"
       component=".publication.Request"
       provides="zope.app.publication.interfaces.IBrowserRequestFactory"
       />
