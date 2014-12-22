@@ -1,0 +1,10 @@
+include *.py
+include *.txt
+include .travis.yml
+include buildout.cfg
+recursive-include src *.css
+recursive-include src *.js
+recursive-include src *.kss
+recursive-include src *.pt
+recursive-include src *.txt
+recursive-include src *.zcml
