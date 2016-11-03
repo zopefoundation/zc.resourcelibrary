@@ -6,6 +6,7 @@ CHANGES
 ------------------
 
 - Make zope.app.publication dependency optional.
+- Python3 fixes to code, tests are still failing as zope.app.testing is not yet ported to python3.
 
 
 1.3.4 (2012-01-20)
