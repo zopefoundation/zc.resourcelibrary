@@ -30,10 +30,8 @@ import zope.component.hooks
 import zope.security.management
 
 
+@zope.interface.implementer(zope.publisher.interfaces.browser.IBrowserPublisher)
 class TestFactory:
-
-    zope.interface.implements(
-        zope.publisher.interfaces.browser.IBrowserPublisher)
 
     def __init__(self, source, checker, name):
         self.name = name

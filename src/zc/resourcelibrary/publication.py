@@ -30,8 +30,9 @@ except:
     class IBrowserRequestFactory(interface.Interface):
         pass
 
+@interface.provider(IBrowserRequestFactory)
 class Request(BrowserRequest):
-    interface.classProvides(IBrowserRequestFactory)
+
     # __slots__ = ('resource_libraries',)
 
     def _createResponse(self):

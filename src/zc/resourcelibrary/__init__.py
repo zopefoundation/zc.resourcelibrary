@@ -1,1 +1,1 @@
-from resourcelibrary import getRequired, getIncluded, need
+from .resourcelibrary import getRequired, getIncluded, need
