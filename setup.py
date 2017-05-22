@@ -13,61 +13,82 @@
 ##############################################################################
 """Setup for zc.resourcelibrary package
 
-$Id: setup.py 81038 2007-10-24 14:34:17Z srichter $
 """
 import os
 from setuptools import setup, find_packages
 
 def read(*rnames):
-    return open(os.path.join(os.path.dirname(__file__), *rnames)).read()
+    with open(os.path.join(os.path.dirname(__file__), *rnames)) as f:
+        return f.read()
 
 setup(name='zc.resourcelibrary',
-      version='1.3.5dev',
+      version='2.0.0.dev0',
       author='Zope Foundation and Contributors',
       author_email='zope-dev@zope.org',
       description='Post-rendering Resource Inclusion',
       long_description=(
-          read('README.txt')
+          read('README.rst')
           + '\n\n.. contents::\n\n' +
-          read('src', 'zc', 'resourcelibrary', 'README.txt')
+          read('src', 'zc', 'resourcelibrary', 'README.rst')
           + '\n\n' +
-          read('CHANGES.txt')
-          ),
-      keywords = "zope3 resource javascript css inclusion",
-      classifiers = [
+          read('CHANGES.rst')
+      ),
+      keywords="zope3 resource javascript css inclusion",
+      classifiers=[
           'Development Status :: 5 - Production/Stable',
           'Environment :: Web Environment',
           'Intended Audience :: Developers',
           'License :: OSI Approved :: Zope Public License',
           'Programming Language :: Python',
+          'Programming Language :: Python',
+          'Programming Language :: Python :: 2',
+          'Programming Language :: Python :: 2.7',
+          'Programming Language :: Python :: 3',
+          'Programming Language :: Python :: 3.4',
+          'Programming Language :: Python :: 3.5',
+          'Programming Language :: Python :: 3.6',
+          'Programming Language :: Python :: Implementation :: CPython',
+          'Programming Language :: Python :: Implementation :: PyPy',
           'Natural Language :: English',
           'Operating System :: OS Independent',
           'Topic :: Internet :: WWW/HTTP',
-          'Framework :: Zope3'],
-      url='http://pypi.python.org/pypi/zc.resourcelibrary',
+          'Framework :: Zope3',
+      ],
+      url='http://github.com/zopefoundation/zc.resourcelibrary',
       license='ZPL 2.1',
       packages=find_packages('src'),
-      package_dir = {'': 'src'},
+      package_dir={'': 'src'},
       namespace_packages=['zc'],
-      extras_require=dict(
-          test=['zope.app.testing',
-                'zope.app.zcmlfiles',
-                'zope.pagetemplate',
-                'zope.securitypolicy',
-                'zope.testbrowser',
-                'zope.testing',
-                ]),
-      install_requires=['setuptools',
-                        'zope.browserpage',
-                        'zope.browserresource',
-                        'zope.component',
-                        'zope.configuration',
-                        'zope.interface',
-                        'zope.publisher',
-                        'zope.security',
-                        'zope.tales',
-                        'zope.traversing',
-                        ],
-      include_package_data = True,
-      zip_safe = False,
-      )
+      extras_require={
+          'test': [
+              'webtest',
+              'zope.app.appsetup >= 4.0.0',
+              'zope.app.basicskin >= 4.0.0',
+              'zope.app.http >= 4.0.1',
+              'zope.app.publication >= 4.2.1',
+              'zope.app.security >= 4.0.0',
+              'zope.app.wsgi >= 4.1.0',
+              'zope.pagetemplate',
+              'zope.principalregistry',
+              'zope.securitypolicy',
+              'zope.testbrowser',
+              'zope.testing',
+              'zope.testrunner',
+          ]
+      },
+      install_requires=[
+          'setuptools',
+          'zope.browserpage',
+          'zope.browserresource',
+          'zope.component',
+          'zope.configuration',
+          'zope.interface',
+          'zope.publisher',
+          'zope.security',
+          'zope.site',
+          'zope.tales',
+          'zope.traversing',
+      ],
+      include_package_data=True,
+      zip_safe=False,
+)

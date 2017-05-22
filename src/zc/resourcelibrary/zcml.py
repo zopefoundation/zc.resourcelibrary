@@ -11,7 +11,9 @@
 # FOR A PARTICULAR PURPOSE.
 #
 ##############################################################################
+
 import os.path
+
 
 from zope.browserresource.directory import DirectoryResourceFactory
 from zope.browserresource.metadirectives import IBasicResourceInformation
@@ -80,6 +82,7 @@ def handler(name, dependencies, required, provided, adapter_name, factory, info=
                 raise ConfigurationError(
                     'Resource library "%s" has unsatisfied dependency on "%s".'
                     % (name, dep))
+
     getSiteManager().registerAdapter(
         factory, required, provided, adapter_name, info)
 
@@ -127,7 +130,7 @@ class ResourceLibrary(object):
             args = (self.name, library_info[self.name].required, (self.layer,),
                     Interface, self.name, factory, _context.info),
             )
-    
+
     def __call__(self):
         if self.old_library_info is None:
             return

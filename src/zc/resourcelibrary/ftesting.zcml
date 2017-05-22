@@ -4,41 +4,132 @@
     xmlns:zc="http://namespaces.zope.com/zc"
     i18n_domain="zope">
 
-  <!-- make some pages to use in the tests -->
+  <include package="zope.browserpage" file="meta.zcml"/>
+  <!-- securityPolicy directive -->
+  <include package="zope.security" file="meta.zcml" />
+  <!-- principal directive -->
+  <include package="zope.principalregistry" file="meta.zcml" />
+  <!-- publisher directive -->
+  <include package="zope.app.publication" file="meta.zcml" />
+  <!-- role directive -->
+  <include package="zope.securitypolicy" file="meta.zcml" />
+  <!-- resource directive -->
+  <include package="zope.browserresource" file="meta.zcml" />
 
+  <!-- object event dispatch, necessary for traversal events -->
+  <include package="zope.component" />
+
+  <include package="zope.security" />
+
+  <!-- traversing -->
+  <include package="zope.location" />
+  <include package="zope.traversing" />
+  <include package="zope.traversing.browser" />
+  <!-- INameChooser -->
+  <include package="zope.container" />
+
+  <include package="zope.site" />
+
+  <include package="zope.publisher" file="meta.zcml" />
+  <include package="zope.publisher" />
+  <include package="zope.browserresource" />
+
+  <include package="zope.app.http" />
+  <!-- traversal events for setting the site -->
+  <include package="zope.app.publication" />
+
+  <!-- Root IAuthentication -->
+  <include package="zope.principalregistry" />
+
+
+  <!-- Register the Application folder -->
+  <include package="zope.app.appsetup" />
+
+  <!-- security declarations -->
+  <include package="zope.app.security" />
+
+  <include package="zc.resourcelibrary" />
+
+  <!-- Skins -->
+  <include package="zope.app.basicskin" />
+
+
+  <!-- make some pages to use in the tests -->
   <browser:page
-      for="zope.app.folder.interfaces.IFolder"
+      for="zope.site.interfaces.IFolder"
       name="zc.resourcelibrary.test_template_1"
       permission="zope.View"
       template="tests/test_template_1.pt"
       />
 
   <browser:page
-      for="zope.app.folder.interfaces.IFolder"
+      for="zope.site.interfaces.IFolder"
       name="zc.resourcelibrary.test_template_2"
       permission="zope.View"
       template="tests/test_template_2.pt"
       />
 
   <browser:page
-      for="zope.app.folder.interfaces.IFolder"
+      for="zope.site.interfaces.IFolder"
       name="zc.resourcelibrary.test_template_3"
       permission="zope.View"
       template="tests/test_template_3.pt"
       />
 
   <browser:page
-      for="zope.app.folder.interfaces.IFolder"
+      for="zope.site.interfaces.IFolder"
       name="zc.resourcelibrary.test_template_4"
       permission="zope.View"
       template="tests/test_template_4.pt"
       />
 
   <browser:page
-      for="zope.app.folder.interfaces.IFolder"
+      for="zope.site.interfaces.IFolder"
       name="zc.resourcelibrary.test_template_5"
       permission="zope.View"
       template="tests/test_template_5.pt"
       />
+
+  <browser:page
+      for="zope.site.interfaces.IFolder"
+      name="zc.resourcelibrary.test_template_6"
+      permission="zope.View"
+      template="tests/test_template_6.pt"
+      />
+
+
+  <browser:page
+      for="zope.site.interfaces.IFolder"
+      name="zc.resourcelibrary.test_template_7"
+      permission="zope.View"
+      template="tests/test_template_7.pt"
+      />
+
+
+  <securityPolicy
+    component="zope.securitypolicy.zopepolicy.ZopeSecurityPolicy" />
+
+  <role id="zope.Anonymous" title="Everybody"
+        description="All users have this role implicitly" />
+  <role id="zope.Manager" title="Site Manager" />
+
+  <!-- Replace the following directive if you don't want public access -->
+  <grant permission="zope.View"
+         role="zope.Anonymous" />
+
+  <grantAll role="zope.Manager" />
+
+  <!-- Principal that tests generally run as -->
+  <principal
+      id="zope.mgr"
+      title="Manager"
+      login="mgr"
+      password="mgrpw" />
+
+  <grant role="zope.Manager" principal="zope.mgr" />
+
+  <class class="zope.site.folder.Folder">
+	<allow attributes="items __getitem__ get __contains__ __setitem__" />
+  </class>
 
 </configure>

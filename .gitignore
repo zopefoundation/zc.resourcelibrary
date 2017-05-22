@@ -10,3 +10,5 @@ eggs/
 include/
 lib/
 local/
+htmlcov/
+.coverage

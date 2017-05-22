@@ -3,7 +3,7 @@ against the current, not global site manager:
 
     >>> class DummySiteManager:
     ...     def registerAdapter(self, *args, **kw):
-    ...         print 'registering our adapter'
+    ...         print('registering our adapter')
     >>> class DummySite:
     ...     def getSiteManager(self):
     ...         return DummySiteManager()
@@ -12,6 +12,7 @@ against the current, not global site manager:
     ... <configure
     ...     xmlns="http://namespaces.zope.org/zope"
     ...     package="zc.resourcelibrary">
+    ...   <include package="." file="meta.zcml" />
     ...
     ...   <resourceLibrary name="some-other-library">
     ...     <directory source="tests/example"/>
