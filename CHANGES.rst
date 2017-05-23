@@ -1,16 +1,20 @@
-=======
-CHANGES
-=======
+=========
+ CHANGES
+=========
 
-1.3.5 (unreleased)
-------------------
+2.0.0 (unreleased)
+==================
 
+
+- Add support for Python 3.4, 3.5, 3.6 and PyPy.
+- Drop test dependency on ``zope.app.testing`` and
+  ``zope.app.zcmlfiles``, among others.
 - Make zope.app.publication dependency optional.
-- Python3 fixes to code, tests are still failing as zope.app.testing is not yet ported to python3.
+
 
 
 1.3.4 (2012-01-20)
-------------------
+==================
 
 - Register adapters with getSiteManager rather than getGlobalSiteManager. This
   allows registering resource libraries in non-global sites. For detais see:
@@ -29,7 +33,7 @@ CHANGES
 - Remove dependency on ``zope.app.pagetemplate``.
 
 1.3.2 (2010-08-16)
-------------------
+==================
 
 - Response._addDependencies will only include a ResourceLibrary in the
   list of dependencies if the ResourceLibrary actually has included
@@ -42,7 +46,7 @@ CHANGES
   imports and whitespace.
 
 1.3.1 (2010-03-24)
-------------------
+==================
 
 - Resource libraries that are required during a retried request are now
   correctly registered and injected to the HTML.
@@ -55,7 +59,7 @@ CHANGES
 
 
 1.3.0 (2009-10-08)
-------------------
+==================
 
 - Use ``zope.browserresource`` instead of ``zope.app.publisher``, removing
   a dependency on latter.
@@ -66,13 +70,13 @@ CHANGES
 - Moved the dependency on zope.site to the test dependencies.
 
 1.2.0 (2009-06-04)
-------------------
+==================
 
 - Use ``zope.site`` instead of ``zope.app.component``.  Removes direct
   dependency on ``zope.app.component``.
 
 1.1.0 (2009-05-05)
-------------------
+==================
 
 New features:
 
@@ -86,7 +90,7 @@ New features:
   inserted using the special marker comment '<!-- zc.resourcelibrary -->'.
 
 1.0.2 (2009-01-27)
-------------------
+==================
 
 - Remove zope.app.zapi from dependencies, substituting
   its uses with direct imports.
@@ -97,7 +101,7 @@ New features:
 - Change "cheeseshop" to "pypi" in the package homepage.
 
 1.0.1 (2008-03-07)
-------------------
+==================
 
 Bugs fixed:
 
@@ -108,7 +112,7 @@ Bugs fixed:
   exception in the resourcelibrary response code.
 
 1.0.0 (2008-02-17)
-------------------
+==================
 
 New features:
 
@@ -123,23 +127,23 @@ Bugs fixed:
 
 
 0.8.2 (2007-12-07)
-------------------
+==================
 
 - bug fix: when checking content type, take into account that it may be None
 
 0.8.1 (2007-12-05)
-------------------
+==================
 
 - changed MIME type handling to be more restrictive about whitespace to
   conform to RfC 2045
 
 0.8 (2007-12-04)
-----------------
+================
 
 - fixed the check for HTML and XML content to allow content type parameters
 
 0.6.1 (2007-11-03)
-------------------
+==================
 
 - Update package meta-data.
 
@@ -148,21 +152,21 @@ Bugs fixed:
 - Merged functional and unit tests.
 
 0.6.0 (2006-09-22)
-------------------
+==================
 
 ???
 
 0.5.2 (2006-06-15)
-------------------
+==================
 
 - Add more package meta-data.
 
 0.5.1 (2006-06-06)
-------------------
+==================
 
 - Update package code to work with newer versions of other packages.
 
 0.5.0 (2006-04-24)
-------------------
+==================
 
 - Initial release.

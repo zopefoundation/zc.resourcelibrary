@@ -1,6 +1,6 @@
-================
-Resource Library
-================
+==================
+ Resource Library
+==================
 
 The resource library is designed to make the inclusion of JavaScript, CSS, and
 other resources easy, cache-friendly, and component-friendly.  For instance, if
@@ -15,7 +15,7 @@ configure that library as available use ZCML like this:
     ... <configure
     ...     xmlns="http://namespaces.zope.org/zope"
     ...     package="zc.resourcelibrary">
-    ...
+    ...   <include package="." file="meta.zcml" />
     ...   <resourceLibrary name="some-library">
     ...     <directory source="tests/example"/>
     ...   </resourceLibrary>
@@ -27,7 +27,7 @@ This is exactly equivalent to a resourceDirectory tag, with no additional
 effect.
 
 Loading Files
--------------
+=============
 
 It is also possible to indicate that one or more Javascript or CSS files should
 be included (by reference) into the HTML of a page that needs the library.
@@ -37,11 +37,11 @@ This is the current difference between resourceLibrary and resourceDirectory.
     ... <configure
     ...     xmlns="http://namespaces.zope.org/zope"
     ...     package="zc.resourcelibrary">
-    ...
+    ...   <include package="." file="meta.zcml" />
     ...   <resourceLibrary name="my-lib">
     ...     <directory
     ...         source="tests/example/my-lib"
-    ...         include="included.js included.css"
+    ...         include="included.js included.css included.kss"
     ...     />
     ...   </resourceLibrary>
     ...
@@ -55,7 +55,7 @@ isn't Javascript or CSS), an exception will occur.
     ... <configure
     ...     xmlns="http://namespaces.zope.org/zope"
     ...     package="zc.resourcelibrary">
-    ...
+    ...   <include package="." file="meta.zcml" />
     ...   <resourceLibrary name="bad-lib">
     ...     <directory
     ...         source="tests/example/my-lib"
@@ -68,11 +68,10 @@ isn't Javascript or CSS), an exception will occur.
     Traceback (most recent call last):
     ...
     ZopeXMLConfigurationError:...
-        ConfigurationError: Resource library doesn't know how to include this
-        file: "included.bad".
+        ConfigurationError: Resource library doesn't know how to include this file: "included.bad".
 
 Usage
------
+=====
 
 Components signal their need for a particular resource library (Javascript or
 otherwise) by using a special TAL expression.  (The use of replace is not
@@ -83,9 +82,10 @@ ignored.)
 
 We'll be using a testbrowser.Browser to simulate a user viewing web pages.
 
-    >>> from zope.testbrowser.testing import Browser
+    >>> from zope.testbrowser.wsgi import Browser
     >>> browser = Browser()
     >>> browser.addHeader('Authorization', 'Basic mgr:mgrpw')
+    >>> browser.handleErrors = False
 
 When a page is requested that does not need any resource libraries, the HTML
 will be untouched.
@@ -107,7 +107,9 @@ A reference to the JavaScript is inserted into the HTML.
 And the JavaScript is available from the URL referenced.
 
     >>> browser.open('/@@/my-lib/included.js')
-    >>> print browser.contents
+    >>> browser.headers['Content-Type']
+    'application/javascript'
+    >>> print(browser.contents.decode('ascii'))
         function be_annoying() {
         alert('Hi there!');
     }
@@ -115,7 +117,7 @@ And the JavaScript is available from the URL referenced.
 For inclusion of resources the full base url with namespaces is used.
 
     >>> browser.open('http://localhost/++skin++Basic/zc.resourcelibrary.test_template_2')
-    >>> print browser.contents
+    >>> print(browser.contents)
     <html...
     src="http://localhost/++skin++Basic/@@/my-lib/included.js"...
     </html>
@@ -129,7 +131,9 @@ A reference to the CSS is also inserted into the HTML.
 And the CSS is available from the URL referenced.
 
     >>> browser.open('/@@/my-lib/included.css')
-    >>> print browser.contents
+    >>> browser.headers['Content-Type']
+    'text/css'
+    >>> print(browser.contents.decode('ascii'))
     div .border {
         border: 1px silid black;
     }
@@ -156,7 +160,7 @@ would not otherwise include a resource library...
     >>> zpt(page, view=View())
     '...<head></head>...'
 
-...but we programmatically indicate that a resource library is needed, it will
+If we then programmatically indicate that a resource library is needed, it will
 be included.
 
     >>> import zc.resourcelibrary
@@ -169,7 +173,7 @@ be included.
     True
 
 Content-type checking
----------------------
+=====================
 
 Resources should be referenced only from HTML and XML content, other content
 types should not be touched by the resource library:
@@ -225,15 +229,15 @@ The content type may also be None if it was never set, which of course doesn't
 count as HTML or XML either:
 
     >>> from zc.resourcelibrary import publication
-    >>> from StringIO import StringIO
-    >>> request = publication.Request(body_instream=StringIO(''), environ={})
+    >>> from io import BytesIO
+    >>> request = publication.Request(body_instream=BytesIO(), environ={})
     >>> request.response.setResult("This is not HTML text.")
-    >>> '/@@/my-lib/included.js' in request.response.consumeBody()
+    >>> b'/@@/my-lib/included.js' in request.response.consumeBody()
     False
 
 
 Dependencies
-------------
+============
 
 If a resource library registers a dependency on another library, the dependency
 must be satisfied or an error will be generated.
@@ -242,6 +246,7 @@ must be satisfied or an error will be generated.
     ... <configure
     ...     xmlns="http://namespaces.zope.org/zope"
     ...     package="zc.resourcelibrary">
+    ...   <include package="." file="meta.zcml" />
     ...
     ...   <resourceLibrary name="dependent-but-unsatisfied" require="not-here">
     ...     <directory source="tests/example"/>
@@ -251,8 +256,8 @@ must be satisfied or an error will be generated.
     ... """)
     Traceback (most recent call last):
     ...
-    ConfigurationExecutionError:...Resource library "dependent-but-unsatisfied"
-    has unsatisfied dependency on "not-here"...
+    ConfigurationExecutionError:...Resource library "dependent-but-unsatisfied" has unsatisfied dependency on "not-here"...
+    ...
 
 When the dependencies are satisfied, the registrations will succeed.
 
@@ -260,6 +265,7 @@ When the dependencies are satisfied, the registrations will succeed.
     ... <configure
     ...     xmlns="http://namespaces.zope.org/zope"
     ...     package="zc.resourcelibrary">
+    ...   <include package="." file="meta.zcml" />
     ...
     ...   <resourceLibrary name="dependent" require="dependency">
     ...     <directory source="tests/example" include="1.js"/>
@@ -285,7 +291,7 @@ page, the second library will also be included in the rendered HTML.
 Order matters, espacially for js files, so the dependency should
 appear before the dependent library in the page
 
-    >>> print browser.contents.strip()
+    >>> print(browser.contents.strip())
     <html>...dependency/2.css...dependent/1.js...</html>
 
 It is possible for a resource library to only register a list of dependencies
@@ -298,6 +304,7 @@ only its dependencies are referenced in the final rendered page.
     ... <configure
     ...     xmlns="http://namespaces.zope.org/zope"
     ...     package="zc.resourcelibrary">
+    ...   <include package="." file="meta.zcml" />
     ...
     ...   <resourceLibrary name="only_require" require="my-lib dependent"/>
     ...
@@ -318,7 +325,7 @@ only its dependencies are referenced in the final rendered page.
 
 
 Error Conditions
-----------------
+================
 
 Errors are reported if you do something wrong.
 
@@ -326,6 +333,7 @@ Errors are reported if you do something wrong.
     ... <configure
     ...     xmlns="http://namespaces.zope.org/zope"
     ...     package="zc.resourcelibrary">
+    ...   <include package="." file="meta.zcml" />
     ...
     ...   <resourceLibrary name="some-library">
     ...     <directory source="does-not-exist"/>
@@ -339,14 +347,14 @@ Errors are reported if you do something wrong.
         ConfigurationError: Directory u'...does-not-exist' does not exist
 
 Multiple Heads
---------------
+==============
 
 On occasion the body of an HTML document may contain the text "<head>".  In
 those cases, only the actual head tag should be manipulated.  The first
 occurrence of "<head>" has the script tag inserted...
 
     >>> browser.open('http://localhost/zc.resourcelibrary.test_template_5')
-    >>> print browser.contents
+    >>> print(browser.contents)
     <html>...<head> <script src="http://localhost/@@/my-lib/included.js"...
 
 ...but that is the only time it is inserted.
@@ -355,7 +363,7 @@ occurrence of "<head>" has the script tag inserted...
     1
 
 Error during publishing
------------------------
+=======================
 
 Note that in case an exception is raised during publishing, the
 resource library is disabled.
@@ -366,12 +374,12 @@ resource library is disabled.
     ...    'value:int=dummy', 'multipart/form-data')
     Traceback (most recent call last):
      ...
-    HTTPError: ...
+    urllib.error.HTTPError: ...
     >>> '/@@/my-lib/included.js' in browser.contents
     False
 
 Custom "directory" factories
-----------------------------
+============================
 
 By default, a resource directory is created when a directory directive
 is used.  You can add a factory option to specify a different
@@ -383,6 +391,7 @@ dynamic resources.
     ... <configure
     ...     xmlns="http://namespaces.zope.org/zope"
     ...     package="zc.resourcelibrary">
+    ...   <include package="." file="meta.zcml" />
     ...
     ...   <resourceLibrary name="my-lib">
     ...     <directory
@@ -404,11 +413,11 @@ directory dynamically.
     True
 
     >>> browser.open('http://localhost/@@/my-lib/foo.js')
-    >>> print browser.contents,
+    >>> print(browser.contents)
     foo = 1;
 
 Library insertion place marker
-------------------------------
+==============================
 
 You can explicitly mark where to insert HTML. Do do that, add the
 special comment "<!-- zc.resourcelibrary -->" (exact string, w/o quotes)
@@ -419,7 +428,7 @@ processing.
 
 A reference to the JavaScript is inserted into the HTML.
 
-    >>> print browser.contents
+    >>> print(browser.contents)
     <html>
       <head>
         <title>Marker test</title>
@@ -433,7 +442,7 @@ A reference to the JavaScript is inserted into the HTML.
     </html>
 
 Future Work
------------
+===========
 
  * We want to be able to specify a single file to add to the resource.
  * We may want to be able to override a file in the resource with a different

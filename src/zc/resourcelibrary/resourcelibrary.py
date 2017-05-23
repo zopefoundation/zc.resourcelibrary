@@ -37,7 +37,7 @@ def need(library_name):
     request = getRequest()
     # only take note of needed libraries if there is a request, and it is
     # capable of handling resource librarys
-    if request and hasattr(request, 'resource_libraries'):
+    if request is not None and hasattr(request, 'resource_libraries'):
         if not library_name in request.resource_libraries:
             request.resource_libraries.append(library_name)
 
@@ -46,3 +46,10 @@ def getRequired(name):
 
 def getIncluded(name):
     return library_info[name].included
+
+try:
+    from zope.testing import cleanup
+except ImportError: # pragma: no cover
+    pass
+else:
+    cleanup.addCleanUp(library_info.clear)

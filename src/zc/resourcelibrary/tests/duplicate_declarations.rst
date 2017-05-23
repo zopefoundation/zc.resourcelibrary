@@ -1,13 +1,14 @@
 It used to be that this configuration would result in wierd errors later as the
 global library_info dict would depend on the order declarations appeared in the
 ZCML.
- 
+
 Now it just errors faster:
 
     >>> zcml("""
     ... <configure
     ...     xmlns="http://namespaces.zope.org/zope"
     ...     package="zc.resourcelibrary">
+    ...   <include package="." file="meta.zcml" />
     ...
     ...   <includeOverrides
     ...     package="zc.resourcelibrary.tests"
@@ -37,6 +38,7 @@ library_info is exactly the same):
     ... <configure
     ...     xmlns="http://namespaces.zope.org/zope"
     ...     package="zc.resourcelibrary">
+    ...   <include package="." file="meta.zcml" />
     ...
     ...   <include
     ...     package="zc.resourcelibrary.tests"
@@ -48,6 +50,7 @@ library_info is exactly the same):
     ... <configure
     ...     xmlns="http://namespaces.zope.org/zope"
     ...     package="zc.resourcelibrary">
+    ...   <include package="." file="meta.zcml" />
     ...
     ...   <include
     ...     package="zc.resourcelibrary.tests"

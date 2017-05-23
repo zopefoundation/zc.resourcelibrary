@@ -12,8 +12,9 @@
 #
 ##############################################################################
 """
-$Id: publication.py 4528 2005-12-23 02:45:25Z gary $
+Hooks into the publisher.
 """
+
 from zope import interface
 from zope.component import queryMultiAdapter, getMultiAdapter
 from zope.publisher.browser import BrowserRequest, BrowserResponse
@@ -26,7 +27,7 @@ import zope.component.hooks
 
 try:
     from zope.app.publication.interfaces import IBrowserRequestFactory
-except:
+except: # pragma: no cover
     class IBrowserRequestFactory(interface.Interface):
         pass
 
@@ -47,8 +48,8 @@ class Request(BrowserRequest):
         to the new request. Otherwise it is not possible to add even new
         libraries to a retried request.
 
-        >>> import StringIO
-        >>> request = Request(StringIO.StringIO(), {})
+        >>> from io import BytesIO
+        >>> request = Request(BytesIO(), {})
         >>> request.resource_libraries = ['foo']
         >>> retry_request = request.retry()
         >>> retry_request is request
@@ -57,7 +58,7 @@ class Request(BrowserRequest):
         True
 
         The assigned libraries are flushed because a new request will define
-        its own set of required librarires.
+        its own set of required libraries.
 
         >>> request.resource_libraries
         []
@@ -100,7 +101,7 @@ class Response(BrowserResponse):
         return response
 
     def _implicitResult(self, body):
-        #figure out the content type
+        # figure out the content type
         content_type = self.getHeader('content-type')
         if content_type is None:
             if isHTML(body):
@@ -147,10 +148,9 @@ class Response(BrowserResponse):
             base = queryMultiAdapter(
                 (site, self._request), IAbsoluteURL, name="resource")
             if base is None:
-                baseURL = str(getMultiAdapter(
-                    (site, self._request), IAbsoluteURL))
-            else:
-                baseURL = str(base)
+                base = getMultiAdapter(
+                    (site, self._request), IAbsoluteURL)
+            baseURL = str(base)
 
         html = []
         for lib in libraries:
@@ -177,8 +177,8 @@ class Response(BrowserResponse):
                     html.append('<link type="text/kss" href="%s" rel="kinetic-stylesheet" />' % url)
                 else:
                     # shouldn't get here; zcml.py is supposed to check includes
-                    raise RuntimeError('Resource library doesn\'t know how to '
-                                       'include this file: "%s"' % file_name)
+                    raise NotImplementedError("Resource library doesn't know how to "
+                                              'include this file: "%s"' % file_name)
 
         return '\n    '.join(html)
 

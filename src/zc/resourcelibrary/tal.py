@@ -13,7 +13,6 @@
 ##############################################################################
 """Resource Library Expression Type
 
-$Id: tal.py 3268 2005-08-22 23:31:27Z benji $
 """
 from zope.tales.expressions import StringExpr
 from zc.resourcelibrary import resourcelibrary
