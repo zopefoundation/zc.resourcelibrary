@@ -39,7 +39,7 @@ from zc.resourcelibrary import tal
 
 
 @zope.interface.implementer(zope.publisher.interfaces.browser.IBrowserPublisher)
-class TestFactory:
+class TestFactory(object):
 
     def __init__(self, source, checker, name):
         self.name = name
@@ -139,6 +139,8 @@ checker = renormalizing.RENormalizing((
     (re.compile(r"u'([^']*)'"), r"'\1'"),
     (re.compile(r'zope.configuration.xmlconfig.ZopeXMLConfigurationError'),
      'ZopeXMLConfigurationError'),
+    (re.compile(r'zope.configuration.exceptions.ConfigurationError'),
+     'ConfigurationError'),
     (re.compile(r'zope.configuration.config.ConfigurationExecutionError'),
      'ConfigurationExecutionError'),
 ))
