@@ -1,14 +1,15 @@
-include *.py
-include *.txt
+# Generated from:
+# https://github.com/zopefoundation/meta/tree/master/config/pure-python
 include *.rst
-include .travis.yml
-include tox.ini
-include .coveragerc
+include *.txt
 include buildout.cfg
+include tox.ini
+
+recursive-include src *.pt
+recursive-include src *.py
+recursive-include src *.rst
+recursive-include src *.txt
+recursive-include src *.zcml
 recursive-include src *.css
 recursive-include src *.js
 recursive-include src *.kss
-recursive-include src *.pt
-recursive-include src *.txt
-recursive-include src *.rst
-recursive-include src *.zcml
