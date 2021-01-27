@@ -17,6 +17,7 @@
 from zope.tales.expressions import StringExpr
 from zc.resourcelibrary import resourcelibrary
 
+
 class ResourceLibraryExpression(StringExpr):
     """Resource library expression handler class"""
 

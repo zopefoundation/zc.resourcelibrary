@@ -17,6 +17,7 @@ import zope.security.interfaces
 
 library_info = {}
 
+
 class LibraryInfo(object):
     def __init__(self):
         self.included = []
@@ -25,7 +26,7 @@ class LibraryInfo(object):
 
 def getRequest():
     try:
-        i = zope.security.management.getInteraction() # raises NoInteraction
+        i = zope.security.management.getInteraction()  # raises NoInteraction
     except zope.security.interfaces.NoInteraction:
         return
 
@@ -33,23 +34,27 @@ def getRequest():
         if IRequest.providedBy(p):
             return p
 
+
 def need(library_name):
     request = getRequest()
     # only take note of needed libraries if there is a request, and it is
     # capable of handling resource librarys
     if request is not None and hasattr(request, 'resource_libraries'):
-        if not library_name in request.resource_libraries:
+        if library_name not in request.resource_libraries:
             request.resource_libraries.append(library_name)
+
 
 def getRequired(name):
     return library_info[name].required
 
+
 def getIncluded(name):
     return library_info[name].included
 
+
 try:
     from zope.testing import cleanup
-except ImportError: # pragma: no cover
+except ImportError:  # pragma: no cover
     pass
 else:
     cleanup.addCleanUp(library_info.clear)

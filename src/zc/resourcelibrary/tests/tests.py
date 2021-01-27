@@ -37,8 +37,8 @@ from zc.resourcelibrary import publication
 from zc.resourcelibrary import tal
 
 
-
-@zope.interface.implementer(zope.publisher.interfaces.browser.IBrowserPublisher)
+@zope.interface.implementer(
+    zope.publisher.interfaces.browser.IBrowserPublisher)
 class TestFactory(object):
 
     def __init__(self, source, checker, name):
@@ -58,8 +58,7 @@ class TestFactory(object):
         return 'foo = 1;\n'
 
 
-
-#### testing framework ####
+# ### testing framework ####
 
 def zcml(s, execute=True, clear=(), site=None):
     zope.component.hooks.setSite(site)
@@ -107,7 +106,8 @@ def zpt(s, view=None, content_type=None):
         body = request.response.consumeBody()
         return body if isinstance(body, str) else body.decode('utf-8')
 
-#### tests ####
+# ### tests ####
+
 
 class TestResponse(unittest.TestCase):
 
@@ -119,14 +119,18 @@ class TestResponse(unittest.TestCase):
         response.setResult('')
         # On Python 3, this has a ';charset=utf-8' parameter, but not
         # on Python 2.
-        self.assertTrue(response.getHeader('content-type').startswith('text/plain'))
+        self.assertTrue(response.getHeader(
+            'content-type').startswith('text/plain'))
 
-#### test setup ####
+# ### test setup ####
+
 
 class _ResourceLibraryFunctionalLayer(TestBrowserLayer,
                                       BrowserLayer):
     def __init__(self):
-        super(_ResourceLibraryFunctionalLayer, self).__init__(zc.resourcelibrary)
+        super(_ResourceLibraryFunctionalLayer,
+              self).__init__(zc.resourcelibrary)
+
 
 ResourceLibraryFunctionalLayer = _ResourceLibraryFunctionalLayer()
 
@@ -161,12 +165,13 @@ def test_suite():
                      | doctest.ELLIPSIS
                      | renormalizing.IGNORE_EXCEPTION_MODULE_IN_PYTHON2),
         checker=checker,
-        )
+    )
     suite.layer = ResourceLibraryFunctionalLayer
     return unittest.TestSuite((
         suite,
         unittest.defaultTestLoader.loadTestsFromName(__name__),
     ))
+
 
 if __name__ == '__main__':
     unittest.main(defaultTest='test_suite')

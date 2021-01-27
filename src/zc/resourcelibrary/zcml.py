@@ -40,14 +40,14 @@ class IResourceLibraryDirective(IBasicResourceInformation):
         This is the name used to disambiguate resource libraries.  No two
         libraries can be active with the same name.""",
         required=True,
-        )
+    )
 
     require = zope.configuration.fields.Tokens(
         title=u"Require",
         description=u"The resource libraries on which this library depends.",
         required=False,
         value_type=zope.schema.Text(),
-        )
+    )
 
 
 class IDirectoryDirective(Interface):
@@ -59,7 +59,7 @@ class IDirectoryDirective(Interface):
         title=u"Source",
         description=u"The directory containing the files to add.",
         required=True,
-        )
+    )
 
     include = zope.configuration.fields.Tokens(
         title=u"Include",
@@ -67,15 +67,22 @@ class IDirectoryDirective(Interface):
                     u"reference this resource library.",
         required=False,
         value_type=zope.schema.Text(),
-        )
+    )
 
     factory = zope.configuration.fields.GlobalObject(
         title=u"Factory",
         description=u"Alternate directory-resource factory",
         required=False,
-        )
+    )
 
-def handler(name, dependencies, required, provided, adapter_name, factory, info=''):
+
+def handler(name,
+            dependencies,
+            required,
+            provided,
+            adapter_name,
+            factory,
+            info=''):
     if dependencies:
         for dep in dependencies:
             if dep not in library_info:
@@ -89,11 +96,12 @@ def handler(name, dependencies, required, provided, adapter_name, factory, info=
 
 INCLUDABLE_EXTENSIONS = ('.js', '.css', '.kss')
 
+
 class ResourceLibrary(object):
 
     def __init__(self, _context, name, require=(),
                  layer=IDefaultBrowserLayer, permission='zope.Public'):
-        self.name =  name
+        self.name = name
         self.layer = layer
 
         if permission == 'zope.Public':
@@ -125,22 +133,23 @@ class ResourceLibrary(object):
         factory = factory(source, self.checker, self.name)
 
         _context.action(
-            discriminator = ('resource', self.name, IBrowserRequest, self.layer),
-            callable = handler,
-            args = (self.name, library_info[self.name].required, (self.layer,),
-                    Interface, self.name, factory, _context.info),
-            )
+            discriminator=('resource', self.name, IBrowserRequest, self.layer),
+            callable=handler,
+            args=(self.name, library_info[self.name].required, (self.layer,),
+                  Interface, self.name, factory, _context.info),
+        )
 
     def __call__(self):
         if self.old_library_info is None:
             return
         curr_li = library_info[self.name]
         if self.old_library_info.included != curr_li.included or \
-            self.old_library_info.required != curr_li.required:
+                self.old_library_info.required != curr_li.required:
             raise NotImplementedError(
-                    "Can't cope with 2 different registrations of the same "
-                    "library: %s (%s, %s) (%s, %s)" % (self.name,
-                        self.old_library_info.required,
-                        self.old_library_info.included,
-                        curr_li.required,
-                        curr_li.included))
+                "Can't cope with 2 different registrations of the same "
+                "library: %s (%s, %s) (%s, %s)" % (
+                    self.name,
+                    self.old_library_info.required,
+                    self.old_library_info.included,
+                    curr_li.required,
+                    curr_li.included))
