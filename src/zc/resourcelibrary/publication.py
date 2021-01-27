@@ -27,9 +27,10 @@ import zope.component.hooks
 
 try:
     from zope.app.publication.interfaces import IBrowserRequestFactory
-except: # pragma: no cover
+except ImportError:  # pragma: no cover
     class IBrowserRequestFactory(interface.Interface):
         pass
+
 
 @interface.provider(IBrowserRequestFactory)
 class Request(BrowserRequest):
@@ -113,7 +114,7 @@ class Response(BrowserResponse):
 
         # check the content type disregarding parameters and case
         if content_type and content_type.split(';', 1)[0].lower() in (
-            'text/html', 'text/xml'):
+                'text/html', 'text/xml'):
             # act on HTML and XML content only!
 
             resource_libraries = self._addDependencies(self.resource_libraries)
@@ -174,19 +175,23 @@ class Response(BrowserResponse):
                     html.append('  -->')
                     html.append('</style>')
                 elif file_name.endswith('.kss'):
-                    html.append('<link type="text/kss" href="%s" rel="kinetic-stylesheet" />' % url)
+                    html.append(
+                        '<link type="text/kss" href="%s"'
+                        ' rel="kinetic-stylesheet" />' % url)
                 else:
                     # shouldn't get here; zcml.py is supposed to check includes
-                    raise NotImplementedError("Resource library doesn't know how to "
-                                              'include this file: "%s"' % file_name)
+                    raise NotImplementedError(
+                        "Resource library doesn't know how to "
+                        'include this file: "%s"' % file_name)
 
         return '\n    '.join(html)
 
     def _addDependencies(self, resource_libraries):
         result = []
+
         def add_lib(lib):
             if lib in result:
-                return # Nothing to do
+                return  # Nothing to do
             try:
                 required = zc.resourcelibrary.getRequired(lib)
             except KeyError:

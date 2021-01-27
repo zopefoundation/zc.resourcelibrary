@@ -1,5 +1,3 @@
-
-import re
 import doctest
 import unittest
 
@@ -9,6 +7,7 @@ from zc.resourcelibrary import resourcelibrary
 from zc.resourcelibrary.resourcelibrary import LibraryInfo
 
 from zc.resourcelibrary.tests.tests import checker
+
 
 class TestDependencyResolution(unittest.TestCase):
 
@@ -24,6 +23,7 @@ class TestDependencyResolution(unittest.TestCase):
         #    libB /
         #       \/
         #      libC
+
         def lib_info(included=None, required=None):
             res = LibraryInfo()
             if included:
@@ -37,10 +37,8 @@ class TestDependencyResolution(unittest.TestCase):
         library_info['libD'] = lib_info('foo.css', 'libC')
         library_info['libE'] = lib_info(required='libD')
 
-
     def tearDown(self):
         resourcelibrary.library_info = self.old_library_info
-
 
     def test_dependency_resolution(self):
         # Test Response._addDependencies
@@ -78,11 +76,13 @@ class TestDependencyResolution(unittest.TestCase):
         self.assertEqual('Unknown resource library: "libZ"',
                          exc.exception.args[0])
 
+
 class TestResourceLibrary(unittest.TestCase):
 
     def test_need_no_request(self):
         # does nothing, but doesn't fail
         self.assertIsNone(resourcelibrary.need('foo'))
+
 
 def test_suite():
     return unittest.TestSuite((
@@ -95,6 +95,7 @@ def test_suite():
             checker=checker,
         ),
     ))
+
 
 if __name__ == '__main__':
     unittest.main(defaultTest='test_suite')
